@@ -1,0 +1,159 @@
+form {
+    width: 100%;
+}
+
+.table {
+    border: 1px solid rgba(27, 27, 48, 0.9);
+    width: 90%;
+    margin: 100px auto;
+    border-collapse: collapse;
+    background-color: #f1f1f1;
+}
+
+.tableHeader {
+    background-color: rgba(27, 27, 48, 0.9);
+    color: rgb(242, 233, 228);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.tableCells {
+    border: 1px solid rgba(27, 27, 48, 0.9);
+    padding: 10px;
+}
+
+.tableCellsService{
+    border: 1px solid rgba(27, 27, 48, 0.9);
+    padding: 10px;
+    max-width: 50%;
+    width: 50%;
+}
+
+.smallTableCells {
+    width: 10%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid rgba(27, 27, 48, 0.9);
+}
+
+.ReserveCell {
+    border-top: 1px solid rgba(27, 27, 48, 0.9);
+    padding: 10px;
+}
+
+.tableCellContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.buttonTable {
+    border: none;
+    padding: 15px 30px;
+    color: rgb(242, 233, 228);
+    background-color: rgba(27, 27, 48, 0.9);
+    cursor: pointer;
+    font-size: 1.1rem;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.tableSelect {
+    width: 60%;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    background-color: rgba(27, 27, 48, 0.9);
+    color: rgb(242, 233, 228);
+    font-size: 1.1rem;
+    border-radius: 7px;
+}
+
+.titleRoom {
+    cursor: pointer;
+}
+
+.titleRoom:hover {
+    color: rgba(143, 143, 218, 0.644);
+}
+
+.roomCost {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.errorCell{
+    box-sizing: border-box;
+    padding: 30px;
+    font-size: 2rem;
+}
+
+.services{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 5px 10px;
+    flex-basis: 100px;
+    background-color: rgba(27, 27, 48, 0.9);
+    color: rgb(242, 233, 228);
+    padding: 7px;
+    border-radius: 20px;
+}
+
+.services span {
+    margin-left: 5px;
+}
+
+.servicesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 70%;
+}
+
+@media screen and (max-width: 760px){
+
+    table{
+        border-collapse: collapse;
+        position: relative;
+    }
+
+    th{
+        display: none;
+    }
+
+    tr , td {
+        display: block;
+    }
+
+    .tableCells , .smallTableCells , .tableCellsService{
+        width: 100%;
+        max-width: 100%;
+        border: none;
+        border-bottom: 1px solid rgba(27, 27, 48, 0.9);
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .ReserveCell{
+        position: absolute;
+        bottom: -80px;
+        left: 0;
+        border: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #tempHeader{
+        padding: 0;
+        background-color: rgba(27, 27, 48, 0.9);
+        color:antiquewhite;
+        height: 100%;
+        border: 1px solid rgba(27, 27, 48, 0.9);
+        box-sizing: border-box;
+        padding: 10px;
+    }
+}

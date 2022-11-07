@@ -1,0 +1,97 @@
+.container {
+    background: linear-gradient(rgb(17, 17, 31) , rgba(23, 23, 41, 0.932));
+    
+}
+
+.innerContainer {
+    min-height: 89.75vh;
+    height: 89.75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box {
+    min-width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(242, 233, 228);
+    min-height: 70%;
+    margin: auto auto;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.box h4 {
+    font-size: 2rem;
+}
+
+.inputs {
+    border: 2px solid rgba(27, 27, 48, 0.726);
+    border-radius: 10px;
+    color:rgb(17, 17, 31);
+    font-weight: 500;
+    outline: none;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 90%;
+    margin: 10px auto;
+    background-color: rgb(242, 233, 228);
+}
+
+.inputs::placeholder {
+    color:rgba(23, 23, 41, 0.932);
+}
+
+.btn {
+    border: none;
+    background-color: rgba(27, 27, 48, 0.9);
+    color:rgb(242, 233, 228);
+    width: 90%;
+    margin: 30px auto;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.radioContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.radioContainer input[type=radio]{
+  /* Hide original inputs */
+  visibility: hidden;
+  position: absolute;
+}
+.radioContainer input[type=radio] + label:before{
+  height:12px;
+  width:12px;
+  margin-right: 5px;
+  margin-left: 5px;
+  content: " ";
+  display:inline-block;
+  vertical-align: middle;
+  border: 2px solid rgba(23, 23, 41, 0.932);
+  border-radius: 50%;
+}
+
+.radioContainer input[type=radio]:checked + label:before{
+  background: rgba(30, 30, 54, 0.932);
+  border: 2px solid rgba(14, 14, 27, 0.9);
+}
+
+span a {
+    text-decoration: none;
+    color: rgba(14, 14, 27, 0.9);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width: 768px){
+    .innerContainer {
+        height: 93.5vh;
+    }
+}
