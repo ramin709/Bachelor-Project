@@ -7,8 +7,9 @@ const RoomTypeScheme = mongoose.Scheme({
     capacity : {type: Number, required: true},
     room_count: {type: Number, required: true},
     booked_count: {type: Number, required: true},
-    description: {type: String, required: true},
+    description: {type: String},
     bed: {type: String, required: true , maxlength: 30},
+    services: [String]
 })
 
 module.exports = mongoose.model('Room_type' , RoomTypeScheme);

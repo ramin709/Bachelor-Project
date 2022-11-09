@@ -7,7 +7,11 @@ const RoomScheme = mongoose.Schema({
     {
         data: Buffer,
         contentType: String
-    }
+    },
+
+    is_booked: {type: Boolean, required: true},
+    is_checked: {type: Boolean, required: true},
+     
 })
 
 module.exports = mongoose.model('Room', RoomScheme);
