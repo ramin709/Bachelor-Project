@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
-const RoomTypeScheme = mongoose.Scheme({
+const RoomTypeScheme = mongoose.Schema({
     room_name: {type: String, required: true},
     cost_per_day: {type: Number, required: true},
     size: {type: Number, required: true},
@@ -9,7 +9,9 @@ const RoomTypeScheme = mongoose.Scheme({
     booked_count: {type: Number, required: true},
     description: {type: String},
     bed: {type: String, required: true , maxlength: 30},
-    services: [String]
+    services: [String],
+    room_img: String,
+    is_featured: {type: Boolean, required: true}
 })
 
-module.exports = mongoose.model('Room_type' , RoomTypeScheme);
+export default mongoose.model('Room_type' , RoomTypeScheme);

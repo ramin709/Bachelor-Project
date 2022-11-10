@@ -1,12 +1,18 @@
-const mongoose = require('mongoose');
-const RoomTypeDocument = require('../models/RoomType.js');
+import mongoose from 'mongoose'
+import RoomTypeDocument from '../models/RoomType.js'
 
 export const getAllRoomTypes = async(req , res) => {
     console.log('request detected in getAllRoomTypes');
 }
 
 export const getFeaturedRoomTypes = async(req , res) => {
-    console.log('request detected in getFeaturedRoomTypes');
+    try {
+        const data = await RoomTypeDocument.find();
+        console.log(data)
+        res.status(200).json(data);
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getRoom = async(req , res) => {

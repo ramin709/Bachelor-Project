@@ -9,6 +9,7 @@ const FeaturedRooms = () => {
     useEffect(() => {
         const getData = async() => {
             const data  = await fetchFeaturedRooms()
+            console.log(data)
             const pureData = data.data
             console.log(pureData)
             setRooms(pureData)
@@ -26,7 +27,7 @@ const FeaturedRooms = () => {
                 {rooms.map((room ,index) => 
                     (<div className="featuredRoom" key={index}>
                         <div className="imageSection">
-                            <img src={room.room_pictures[0]} alt={room.room_name} />
+                            {<img src={room?.room_img} alt={room.room_name} />}
                         </div>
                         <div className="infoSection">
                             <h4 className="infoSectionTitle">{room.room_name}</h4>

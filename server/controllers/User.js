@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const UserDocument = require('../models/User.js');
+import mongoose from 'mongoose';
+import UserDocument from '../models/User.js'
 
 export const getUser = async(req , res) => {
     console.log('request detected in getUser');

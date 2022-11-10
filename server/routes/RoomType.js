@@ -1,7 +1,5 @@
-const express = require('express');
-const roomTypeControllers = require('../controllers/RoomType.js');
-
-const {getAllRoomTypes , getFeaturedRoomTypes , getRoom} = roomTypeControllers;
+import express from 'express';
+import {getAllRoomTypes , getFeaturedRoomTypes , getRoom} from '../controllers/RoomType.js'
 
 const router = express.Router();
 
