@@ -8,7 +8,6 @@ export const getAllRoomTypes = async(req , res) => {
 export const getFeaturedRoomTypes = async(req , res) => {
     try {
         const data = await RoomTypeDocument.find();
-        console.log(data)
         res.status(200).json(data);
     } catch (error) {
         console.log(error)
