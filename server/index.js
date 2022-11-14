@@ -6,6 +6,7 @@ import cors from 'cors';
 import roomTypeRouter from './routes/RoomType.js'
 import userRouter from './routes/User.js'
 import bookingInfoRouter from './routes/BookingInfo.js'
+import roomRouter from './routes/Room.js'
 
 const server = express();
 dotenv.config();
@@ -13,6 +14,7 @@ server.use(cors());
 server.use('/roomType' , roomTypeRouter);
 server.use('/user' , userRouter);
 server.use('/reserve' , bookingInfoRouter);
+server.use('/room' , roomRouter);
 server.use(bodyParser.json({limit: "30mb" , extended: true}));
 server.use(bodyParser.urlencoded({limit: "30mb" , extended: true}));
 

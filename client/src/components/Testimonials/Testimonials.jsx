@@ -108,15 +108,15 @@ const Testimonials = () => {
                                 {
                                     reviewList.map(reviewItem => (
 
-                                        <div className="card" key={reviewItem.userId}>
+                                        <div className="card" key={reviewItem.user_id}>
                                             <div className="cardHeader">
                                                 <img src={IMG} alt="" className="cardImg" />
                                                 <Box className="cardInfo">
-                                                    <span className="cardName">{reviewItem.first_name}</span>
+                                                    <span className="cardName">{reviewItem.first_name} {reviewItem.last_name}</span>
                                                     <Rating
                                                         name="simple-controlled"
                                                         className="rating"
-                                                        value={reviewItem.rate}
+                                                        value={reviewItem.rating}
                                                         readOnly
                                                     />
                                                 </Box>

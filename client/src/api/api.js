@@ -5,7 +5,7 @@ const API = axios.create({baseURL: 'http://localhost:5000'})
 export const fetchStats = () => API.get('/user/Stats/');
 export const fetchFeaturedRooms = () => API.get('/roomType/FeaturedRooms/');
 export const fetchTestimonials = () => API.get('/user/Testimonials/');
-export const fetchBookNow = (data) => API.post('/BookNow/' , data);
+export const fetchBookNow = (data) => API.post('/room/BookNow/' , data);
 export const getBookNow = () => API.get('/BookNow/' , {headers: {'Cache-Control': 'max-age=3000'}});
 export const reserveBookNow = (data) => API.post('/BookNow/' , data);
 export const sendSignUpData = (data) => API.post('/user/SignUp/', data);
