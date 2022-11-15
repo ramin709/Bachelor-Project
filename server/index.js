@@ -11,12 +11,12 @@ import roomRouter from './routes/Room.js'
 const server = express();
 dotenv.config();
 server.use(cors());
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true}));
 server.use('/roomType' , roomTypeRouter);
 server.use('/user' , userRouter);
 server.use('/reserve' , bookingInfoRouter);
 server.use('/room' , roomRouter);
-server.use(bodyParser.json({limit: "30mb" , extended: true}));
-server.use(bodyParser.urlencoded({limit: "30mb" , extended: true}));
 
 const PORT = process.env.PORT || 5000;
 

@@ -4,7 +4,7 @@ import { MdOutlineRoomService } from 'react-icons/md'
 import { GiConfirmed } from 'react-icons/gi'
 import './RoomCard.css'
 
-const RoomCard = ({ room , guest }) => {
+const RoomCard = ({ room, guest }) => {
     return (
         <div className="RoomCardContainer">
             <div className="innerRoomCard">
@@ -19,16 +19,14 @@ const RoomCard = ({ room , guest }) => {
             </div>
 
             <div className="roomServices">
-                { 
+                {
                     room.services.map((service, index) => <span key={Object.values(service)[0]}>{
-                        Object.keys(service).map(item => {
-                            return (
-                                <div className="roomServiceItem">
-                                    <Icon item={Number(item)} />
-                                    <span>{service[item]}</span>
-                                </div>
-                            )
-                        })
+
+                        <div className="roomServiceItem">
+                            <Icon item={service} />
+                            <span>{service}</span>
+                        </div>
+
                     }</span>)
                 }
 

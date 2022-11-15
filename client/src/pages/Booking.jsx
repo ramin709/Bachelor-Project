@@ -58,7 +58,7 @@ const Booking = () => {
     const getData = async() => {
       /* console.log(roomsName); */
       const {data} = await fetchReserveInfo({room : roomsName});
-      /* console.log(data) */
+      console.log(data)
       setRoomData(data)
     }
 

@@ -16,27 +16,27 @@ import './Table.css'
 
 export const Icon = ({ item }) => {
     const map1 = new Map([
-        [1, IoMdSnow],
-        [2, MdBalcony],
-        [3, MdWifi],
-        [4, MdOutlineWaves],
-        [5, FaMountain],
-        [6, GiShower],
-        [7, MdOutlineSafetyDivider],
-        [8, MdBathtub],
-        [9, GiTeapot],
-        [10, FaWind],
-        [11, GiWoodBeam],
-        [12, MdIron],
-        [13, FaGlassCheers],
-        [14, GiBugNet],
-        [15, MdOutlinePets],
-        [16, MdKitchen],
-        [17, MdFitnessCenter],
-        [18, FaSwimmer],
-        [19, GiElectricalSocket],
-        [20, MdVolumeOff],
-        [21, MdMonitor]
+        ['Air Conditioning', IoMdSnow],
+        ['Balcony', MdBalcony],
+        ["Free Wifi", MdWifi],
+        ['Sea View', MdOutlineWaves],
+        ['Mountain View', FaMountain],
+        ['Private Bathroom', GiShower],
+        ['Safe', MdOutlineSafetyDivider],
+        ['Bath Tub', MdBathtub],
+        ['Electric Kettle', GiTeapot],
+        ['Hairdryer', FaWind],
+        ['Hardwood Floor', GiWoodBeam],
+        ['Iron', MdIron],
+        ['Minibar', FaGlassCheers],
+        ['Mosquito Net', GiBugNet],
+        ['Pets Allowed', MdOutlinePets],
+        ['Private Kitchenette', MdKitchen],
+        ['Public Fitness Centre', MdFitnessCenter],
+        ['Public Swimming Pool', FaSwimmer],
+        ['Socket near the bed', GiElectricalSocket],
+        ['Sound Proof', MdVolumeOff],
+        ["TV", MdMonitor]
     ]);
 
     const selectedIcon = map1.get(item)
@@ -71,13 +71,14 @@ const Table = () => {
                 }
 
                 const { data } = await fetchBookNow(readyData);
-                const { Error, Data } = data
-                /* console.log(Error)
-                console.log(Data)
-                console.log(Data.length); */
-                if (Data.length > 0) {
+                console.log(data)
+                const { Error, response } = data
+                console.log(Error)
+                console.log(response)
+                console.log(response.length);
+                if (response.length > 0) {
 
-                    setRecomended(Data)
+                    setRecomended(response)
                 } else {
                     ref.current.textContent = Error.checkOut
                     setRecomended(null)
@@ -123,7 +124,7 @@ const Table = () => {
                 const url = `/Booking?checkIn=${reserved?.checkIn}&checkOut=${reserved?.checkOut}&adults=`
                     + `${reserved?.adults}&children=${reserved?.children}${listOfRooms} `
                 navigator(url);
-            }else{
+            } else {
                 ref.current.textContent = 'No room has selected'
             }
         } else {
@@ -162,9 +163,6 @@ const Table = () => {
                                         <h4 className="titleRoom">
                                             {room.room_name}
                                         </h4>
-                                        {
-                                            room.description
-                                        }
                                     </td>
                                     <td className="smallTableCells">
                                         {
@@ -181,14 +179,11 @@ const Table = () => {
                                             <div className="servicesContainer">
                                                 {
                                                     room.services.map((service, index) => <span key={index}>{
-                                                        Object.keys(service).map(item => {
-                                                            return (
-                                                                <div className="services">
-                                                                    <Icon item={Number(item)} />
-                                                                    <span>{service[item]}</span>
-                                                                </div>
-                                                            )
-                                                        })
+                                                        <div className="services">
+                                                            <Icon item={service} />
+                                                            <span>{service}</span>
+                                                        </div>
+
                                                     }</span>)
 
                                                 }
@@ -198,7 +193,8 @@ const Table = () => {
                                     <td className="tableCells">
                                         <select name="" id="" className="tableSelect" onChange={(e) => handleChange(e, room.room_name)}>
                                             {
-                                                room.vacant_count > 6 ?
+
+                                                room.room_count - room.booked_count > 6 ?
                                                     <>
                                                         <option value="0">0 &nbsp; &nbsp; &nbsp; ({0 * room.cost_per_day}$)</option>
                                                         <option value="1">1 &nbsp; &nbsp; &nbsp; ({1 * room.cost_per_day}$)</option>
@@ -211,7 +207,7 @@ const Table = () => {
 
                                                     <>
                                                         {
-                                                            [...Array(room.vacant_count)].map(number => (
+                                                            [...Array(room.room_count - room.booked_count + 1)].map((cost, number) => (
                                                                 <option value={number}>{number} &nbsp; &nbsp; &nbsp; ({number * room.cost_per_day}$)</option>
                                                             ))
                                                         }

@@ -1,8 +1,9 @@
 import express from 'express';
-import { getAllAvailableRoomTypes } from '../controllers/Room.js';
+import { getAllAvailableRoomTypes , getAvailableRoomTypes } from '../controllers/Room.js';
 const router = express.Router();
 
-router.post('/BookNow/' , getAllAvailableRoomTypes);
+router.get('/BookNow/' , getAllAvailableRoomTypes);
+router.post('/BookNow/' , getAvailableRoomTypes);
 
 export default router;
 
