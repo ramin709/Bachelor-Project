@@ -3,8 +3,6 @@ import RoomDocument from '../models/Room.js'
 import RoomTypeDocument from '../models/RoomType.js'
 
 export const getRoomCounts = async (req, res) => {
-    console.log('request detected in getRoom');
-
     const roomCounts = await RoomDocument.count();
     return roomCounts;
 }
@@ -64,8 +62,6 @@ export const getAvailableRoomTypes = async (req, res) => {
 
 export const getAllAvailableRoomTypes = async (req, res) => {
     const allRoomTypes = await RoomTypeDocument.find();
-    console.log(allRoomTypes)
     var allRoomTypesWithEmptyRoom = allRoomTypes.filter(roomType => (roomType.room_count - roomType.booked_count) !== 0);
-    console.log(allRoomTypesWithEmptyRoom);
-    res.status(200).json(allRoomTypesWithEmptyRoom)
+    res.status(200).json(allRoomTypesWithEmptyRoom);
 }

@@ -2,7 +2,8 @@ import mongoose from 'mongoose'
 import RoomTypeDocument from '../models/RoomType.js'
 
 export const getAllRoomTypes = async(req , res) => {
-    console.log('request detected in getAllRoomTypes');
+    const allRoomTypes = await RoomTypeDocument.find();
+    res.status(200).json({allRoomTypes})
 }
 
 export const getFeaturedRoomTypes = async(req , res) => {
@@ -15,5 +16,8 @@ export const getFeaturedRoomTypes = async(req , res) => {
 }
 
 export const getRoom = async(req , res) => {
-    console.log('request detected in getRoom');
+   const {id} = req.params;
+   const room = await RoomTypeDocument.findOne({_id: id});
+   const roomWithSixService = {...room._doc, services: room?.services.splice(0,6)};
+   res.status(200).json(roomWithSixService);
 }

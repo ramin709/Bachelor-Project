@@ -16,12 +16,12 @@ const RoomSummary = ({ services }) => {
                     services.map(service => (
                         <span>
                             {
-                                Object.keys(service).map(item => (
-                                    <div className="aminitesItem">
-                                        <Icon item={Number(item)} className="icons" />
-                                        {service[item]}
-                                    </div>
-                                ))
+
+                                <div className="aminitesItem">
+                                    <Icon item={service} className="icons" />
+                                    {service}
+                                </div>
+
                             }
                         </span>
                     ))

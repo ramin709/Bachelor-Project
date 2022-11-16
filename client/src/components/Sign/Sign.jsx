@@ -67,12 +67,24 @@ const Sign = ({ signUp }) => {
             });
         } else {
             if(signUp){
-                console.log(SignData);
-                sendSignUpData(SignData);  
+                /* console.log(SignData);
+                console.log(SignData); */
+                const akbar = async (SignData) =>{
+                    var {data} = await sendSignUpData(SignData);
+                    /* console.log(data);
+                    console.log(data.access);
+                    console.log(data.refresh); */
+                    localStorage.setItem('access', data.access);
+                    localStorage.setItem('refresh', data.refresh);
+                    /* token.dispath({type : "set"}) */
+                } 
+                
+                akbar(SignData)
+                navigator('/') 
             }else{
                 console.log(loginData);
                 const akbar = async (loginData) =>{
-                    var {data} = await sendSignInData(loginData)
+                    var {data} = await sendSignInData(loginData);
                     console.log(data.access);
                     console.log(data.refresh);
                     localStorage.setItem('access', data.access);
@@ -82,14 +94,8 @@ const Sign = ({ signUp }) => {
                 
                 akbar(loginData)
                 navigator('/')
-
-            }
-            
-            
+            }   
         }
-
-
-
     }
 
     return (

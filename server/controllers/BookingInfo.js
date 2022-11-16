@@ -8,7 +8,6 @@ export const getReservationData = async(req, res) => {
     var pureRoomsData = [];
 
     for(let i = 0; i < room.length; i++) {
-        console.log(room)
         roomsData.push(await RoomTypeDocument.find({room_name: room[i]}))
     }
 

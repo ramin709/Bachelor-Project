@@ -70,14 +70,14 @@
     grid-column-end: line2;
     grid-row-start: row1-start;
     grid-row-end: 3;
-    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room1.webp);
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room1.webp); */
 }
 
 #item2 {
     grid-column-start: 1;
     grid-column-end: line2;
     grid-row-start: third-line;
-    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room2.webp);
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room2.webp); */
     grid-row-end: 6;
 }
 
@@ -86,7 +86,7 @@
     grid-column-end: line3;
     grid-row-start: row1-start;
     grid-row-end: 3;
-    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room3.webp);
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(../../../public/images/room3.webp); */
 }
 
 #item4 {

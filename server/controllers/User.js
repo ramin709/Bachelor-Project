@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import UserDocument from '../models/User.js';
 import ReviewsDocument from '../models/Reviews.js';
 import { getRoomCounts } from './Room.js';
@@ -28,15 +29,53 @@ export const editUserInfo = async (req, res) => {
 }
 
 export const signUp = async (req, res) => {
-    console.log('request detected in signUp');
+    const { first_name, last_name, check, password, confirm_password, username } = req.body;
+    try {
+        const existingUser = await UserDocument.findOne({ username });
+
+        if (existingUser) {
+            res.status(400).json({ message: 'User already exists' });
+        }
+
+        if (password !== confirm_password) {
+            res.status(400).json({ message: 'Password does not match with confirm password' });
+        }
+
+        const newUser = await UserDocument.create({ username, password: await bcrypt.hash(password, 12), first_name, last_name });
+        const refresh = jwt.sign({ id: newUser._id }, 'test', { expiresIn: '1h' });
+        const access = jwt.sign({ id: newUser._id }, 'test', { expiresIn: '5m' });
+        console.log(access);
+        res.status(200).json({ refresh, access });
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const signIn = async (req, res) => {
-    console.log('request detected in getUser');
+    const { username, password } = req.body;
+    try {
+        const relatedUser = await UserDocument.findOne({ username });
+
+        if (!relatedUser) {
+            res.status(404).json({ message: 'User not found' });
+        }
+
+        const isPasswordTrue = await bcrypt.compare(password, relatedUser.password);
+
+        if (!isPasswordTrue) {
+            res.status(400).json({ message: 'Password is incorrect' });
+        }
+
+        const refresh = jwt.sign({ id: relatedUser._id }, 'test', { expiresIn: '1h' });
+        const access = jwt.sign({ id: relatedUser._id }, 'test', { expiresIn: '5m' });
+
+        res.status(200).json({ refresh, access });
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getFeaturedReviews = async (req, res) => {
-    console.log('request detected in getFeaturedReviews');
     const allReviews = await ReviewsDocument.find({ rating: { $gte: 4 } });
 
     const allUsers = await UserDocument.find();
@@ -50,7 +89,7 @@ export const getFeaturedReviews = async (req, res) => {
         })
     });
 
-    res.status(200).json(reviewsWithUserInfo.slice(0,8));
+    res.status(200).json(reviewsWithUserInfo.slice(0, 8));
 
 }
 
