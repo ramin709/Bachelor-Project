@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import { LOGOUT } from '../redux/constants';
 
 const Logout = () => {
 
   const navigator = useNavigate();
+  const dispath = useDispatch();
 
   useEffect(() => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
+    dispath({type: LOGOUT})
 
     navigator('/')
   })

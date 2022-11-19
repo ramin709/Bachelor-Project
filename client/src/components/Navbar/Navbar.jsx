@@ -1,6 +1,7 @@
 import React /* { useEffect , useContext } */ from 'react'
 import './Navbar.css'
 import { useState } from 'react'
+import {useSelector} from 'react-redux';
 import { Link } from 'react-router-dom'
 import { VscThreeBars } from 'react-icons/vsc'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,8 +15,8 @@ const Navbar = ({ covered }) => {
 
   const [visibility, setVisibility] = useState(false);
   const [open, setOpen] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem('access'));
-  console.log(token)
+  const refresh = useSelector(state => state?.auth?.userData)
+  console.log(refresh)
 
   const checkScroll = () => {
     if (window.scrollY >= 500 && !visibility) {
@@ -67,7 +68,7 @@ const Navbar = ({ covered }) => {
               <Link to="/bookNow" className="navItemLinks special">Book Now</Link>
             </li>
             {
-              token ? 
+              refresh ? 
               
               <>
                       <li className = "navItem">
