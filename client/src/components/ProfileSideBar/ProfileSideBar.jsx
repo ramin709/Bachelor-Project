@@ -2,25 +2,25 @@ import React from 'react'
 import './ProfileSideBar.css'
 import { AiOutlinePaperClip } from 'react-icons/ai'
 
-const ProfileSideBar = () => {
+const ProfileSideBar = ({user}) => {
     return (
         <div className='profileSideBarContainer'>
             <div className="profileSideBarCard">
                 <div className="innerProfileCard">
                     <div className="profileImgContainer">
-                        <img src="../images/person1.webp" alt="profileImg" />
+                        <img src={user?.profile_img} alt="profileImg" />
                     </div>
 
                     <div className="profileInfo">
-                        <h6 className="profileUserName">John_Doe1988</h6>
+                        <h6 className="profileUserName">{user?.username}</h6>
                         <div className="profileName">
-                            <span className="Name">John</span>
-                            <span className="Name">Doe</span>
+                            <span className="Name">{user?.first_name}</span>
+                            <span className="Name">{user?.last_name}</span>
                         </div>
 
                         <div className="furtherInfo">
-                            <span className="email">John_Doe1988@gmail.com</span>
-                            <span className="Phone">09126698585</span>
+                            <span className="email">{user?.email}</span>
+                            <span className="Phone">{user?.phone_number}</span>
                         </div>
                     </div>
                 </div>

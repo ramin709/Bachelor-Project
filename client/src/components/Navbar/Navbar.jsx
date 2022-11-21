@@ -15,7 +15,7 @@ const Navbar = ({ covered }) => {
 
   const [visibility, setVisibility] = useState(false);
   const [open, setOpen] = useState(false);
-  const refresh = useSelector(state => state?.auth?.userData)
+  const refresh = localStorage.getItem('refresh')
   console.log(refresh)
 
   const checkScroll = () => {

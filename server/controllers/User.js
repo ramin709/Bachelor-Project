@@ -17,15 +17,35 @@ const getMostPositiveRatings = async () => {
 }
 
 export const getUser = async (req, res) => {
-    console.log('request detected in getUser');
+    const userId = req.id;
+    const relatedUser = await UserDocument.findOne({ _id: userId });
+    res.status(200).json({ user: relatedUser })
 }
 
 export const changePassword = async (req, res) => {
-    console.log('request detected in changePassword');
+    const { old_password, new_password, confirm_new_password } = req.body;
+    const userId = req.id;
+
+    const relatedUser = await UserDocument.findOne({ _id: userId });
+
+    if (new_password !== confirm_new_password) {
+        res.status(400).json({ message: 'Passwords does not match' });
+    }
+
+    if (relatedUser.password === await bcrypt.hash(old_password, 12)) {
+        res.status(400).json({ message: 'old password does not match with stored information' });
+    }
+
+    const userWithNewPass = await UserDocument.findByIdAndUpdate(userId, { password: await bcrypt.hash(new_password, 12) });
+    console.log(userWithNewPass);
+    res.status(200).json({ user: userWithNewPass });
 }
 
 export const editUserInfo = async (req, res) => {
-    console.log('request detected in editUserInfo');
+    const userId = req.id;
+    const { username, first_name, last_name, email, phone, gender, birth_date } = req.body;
+    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, first_name, last_name, email, phone, gender, birth_date });
+    res.status(200).json({ user: userWithNewInfo });
 }
 
 export const signUp = async (req, res) => {
@@ -57,12 +77,14 @@ export const signIn = async (req, res) => {
         const relatedUser = await UserDocument.findOne({ username });
 
         if (!relatedUser) {
+            console.log('not found');
             res.status(404).json({ message: 'User not found' });
         }
 
         const isPasswordTrue = await bcrypt.compare(password, relatedUser.password);
 
         if (!isPasswordTrue) {
+            console.log('password is not correct')
             res.status(400).json({ message: 'Password is incorrect' });
         }
 

@@ -2,7 +2,7 @@ import React, { useRef, useState  } from 'react'
 import Navbar from '../Navbar/Navbar'
 import {useDispatch} from 'react-redux'
 import { Link , useNavigate } from 'react-router-dom'
-import {signIn, signUp} from '../../redux/actions/user.js'
+import {signInUser, signUpUser} from '../../redux/actions/user.js'
 import './Sign.css'
 const Sign = ({ signUp }) => {
 
@@ -67,10 +67,10 @@ const Sign = ({ signUp }) => {
             });
         } else {
             if(signUp){
-                dispath(signUp(SignData , navigator))
+                dispath(signUpUser(SignData , navigator))
             }else{
                 console.log(loginData);
-                dispath(signIn(loginData , navigator))
+                dispath(signInUser(loginData , navigator))
             }   
         }
     }

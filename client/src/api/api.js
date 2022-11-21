@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API = axios.create({baseURL: 'http://localhost:5000'})
+const API = axios.create({baseURL: 'http://localhost:5000'});
+API.interceptors.request.use(req => {
+    if(localStorage.getItem('refresh')){
+        req.headers.Authorization = `Bearer ${localStorage.getItem('refresh')}`;
+    }
+    return req;
+})
 
 export const fetchStats = () => API.get('/user/Stats/');
 export const fetchFeaturedRooms = () => API.get('/roomType/FeaturedRooms/');
