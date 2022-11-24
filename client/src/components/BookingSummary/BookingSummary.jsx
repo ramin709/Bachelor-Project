@@ -37,9 +37,13 @@ const BookingSummary = ({ rooms , info }) => {
 
     const handleClick = async(e) => {
         e.preventDefault();
-        console.log(userData);
+        /* console.log(userData);
+        console.log(totalCost); */
 
-        const {data} = await sendReservationData(userData);
+        const dataForAPI = {...userData, eachRoomTotalCost: totalCost?.eachRoomTotalCost};
+        console.log(dataForAPI)
+
+        const {data} = await sendReservationData(dataForAPI);
         console.log(data);
 
     }
