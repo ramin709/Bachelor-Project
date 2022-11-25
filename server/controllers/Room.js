@@ -66,11 +66,13 @@ export const getAllAvailableRoomTypes = async (req, res) => {
     res.status(200).json(allRoomTypesWithEmptyRoom);
 }
 
-export const findEmptyRoom = async(roomType) => {
-    const foundedRoom = await RoomDocument.findOne({is_booked : false}).where('room_type').equals(roomType);
-    console.log(foundedRoom);
-    await bookRoom(foundedRoom?.room_number);
-    return foundedRoom?.room_number;
+export const findEmptyRoom = async(roomType , count) => {
+    var roomNumbers = []
+    const foundedRooms = await RoomDocument.find({is_booked : false , room_name: roomType}).limit(count);
+    
+    foundedRooms.map(room => roomNumbers.push(room?.room_number));
+
+    return roomNumbers;
 }
 
 export const bookRoom = async (roomNumber) => {

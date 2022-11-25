@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getUserData, sendProfileChange, sendChangePassData } from '../../api/api'
+import { sendProfileChange, sendChangePassData, getReservationHistory } from '../../api/api'
 import './ProfileMainCard.css'
 
 const ProfileMainCard = ({ user }) => {
@@ -11,6 +11,7 @@ const ProfileMainCard = ({ user }) => {
 
     const [activeTab, setActiveTab] = useState(EDIT_PROFILE);
     const [enableEdit, setEnableEdit] = useState(false);
+    const [history, setHistory] = useState([]);
     const ref = useRef();
     const [profileFormData, setProfileFormData] = useState({
         first_name: user?.first_name,
@@ -29,11 +30,18 @@ const ProfileMainCard = ({ user }) => {
     })
 
     useEffect(() => {
+        const getHistory = async () => {
+            const { data } = await getReservationHistory();
+            console.log(data)
+            setHistory(data);
+        }
 
+        if (activeTab === History) {
+            getHistory();
+        }
 
-    }, [])
+    }, [activeTab])
 
-    console.log(activeTab);
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -61,7 +69,7 @@ const ProfileMainCard = ({ user }) => {
         setEnableEdit(false)
     }
 
-    const handleChangeInfo = async(e) => {
+    const handleChangeInfo = async (e) => {
         e.preventDefault();
 
         console.log(profileFormData);
@@ -69,7 +77,7 @@ const ProfileMainCard = ({ user }) => {
         console.log(data);
     }
 
-    const handlePasswordForm = async(e) => {
+    const handlePasswordForm = async (e) => {
         e.preventDefault();
 
         const data = await sendChangePassData(passwordFormData);
@@ -106,41 +114,41 @@ const ProfileMainCard = ({ user }) => {
                                         <input type="text" ref={ref}
                                             name="first_name"
                                             id="firstName"
-                                            disabled={!enableEdit} 
+                                            disabled={!enableEdit}
                                             onChange={(e) => setProfileFormData({ ...profileFormData, first_name: e.target.value })}
-                                            defaultValue = {user?.first_name}
-                                            />
+                                            defaultValue={user?.first_name}
+                                        />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="lastName">Last Name</label>
-                                        <input type="text" name="last_name" id="lastName" disabled={!enableEdit} 
-                                        onChange={(e) => setProfileFormData({ ...profileFormData, last_name: e.target.value })}
-                                        defaultValue = {user?.last_name}
+                                        <input type="text" name="last_name" id="lastName" disabled={!enableEdit}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, last_name: e.target.value })}
+                                            defaultValue={user?.last_name}
                                         />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="email">Email</label>
                                         <input type="text" name="email" id="email" disabled={!enableEdit}
-                                        defaultValue = {user?.email} 
-                                        onChange={(e) => setProfileFormData({ ...profileFormData, email: e.target.value })} />
+                                            defaultValue={user?.email}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, email: e.target.value })} />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="Phone">Phone</label>
                                         <input type="text" name="phone" id="Phone" disabled={!enableEdit}
-                                        defaultValue = {user?.phone_number} 
-                                        onChange={(e) => setProfileFormData({ ...profileFormData, phone: e.target.value })} />
+                                            defaultValue={user?.phone_number}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, phone: e.target.value })} />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="userName">Username</label>
-                                        <input type="text" name="username" id="userName" disabled={!enableEdit} 
-                                        defaultValue = {user?.username}
-                                        onChange={(e) => setProfileFormData({ ...profileFormData, username: e.target.value })} />
+                                        <input type="text" name="username" id="userName" disabled={!enableEdit}
+                                            defaultValue={user?.username}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, username: e.target.value })} />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="userName">Birth Date</label>
-                                        <input type="date" name="username" id="userName" disabled={!enableEdit} 
-                                        defaultValue = {user?.birthday}
-                                        onChange={(e) => setProfileFormData({ ...profileFormData, birth_date: e.target.value })} />
+                                        <input type="date" name="username" id="userName" disabled={!enableEdit}
+                                            defaultValue={user?.birthday}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, birth_date: e.target.value })} />
                                     </div>
                                     <div className="radioProfileContainer">
 
@@ -217,7 +225,27 @@ const ProfileMainCard = ({ user }) => {
                                             </tr>
                                         </thead>
                                         <tbody className="profileTableBody">
-                                            <tr className="profileTableRow">
+                                            {
+                                                history.map(singleHistory =>
+                                                    singleHistory.roomsInfo.map(roomInfo =>
+                                                        roomInfo.room_number.map(room => {
+                                                            return (
+                                                                <tr className="profileTableRow">
+                                                                    <td className="profileTableBodyCell">
+                                                                        {new Date(singleHistory.check_in).toDateString()}
+                                                                        to
+                                                                        {new Date(singleHistory.check_out).toDateString()}
+                                                                    </td>
+                                                                    <td className="profileTableBodyCell">{room}</td>
+                                                                    <td className="profileTableBodyCell">{roomInfo.room_name}</td>
+                                                                    <td className="profileTableBodyCell">$ {roomInfo.total_cost / roomInfo.count}</td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    )
+                                                )
+                                            }
+                                            {/* <tr className="profileTableRow">
                                                 <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
                                                 <td className="profileTableBodyCell">202</td>
                                                 <td className="profileTableBodyCell">Medium Royal</td>
@@ -246,13 +274,7 @@ const ProfileMainCard = ({ user }) => {
                                                 <td className="profileTableBodyCell">202</td>
                                                 <td className="profileTableBodyCell">Medium Royal</td>
                                                 <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
-                                            <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
+                                            </tr> */}
                                         </tbody>
                                     </table>
                                 </div>

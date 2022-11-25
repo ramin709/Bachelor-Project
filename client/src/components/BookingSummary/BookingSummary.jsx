@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { sendReservationData } from '../../api/api'
+import {useNavigate} from 'react-router-dom'
 import './BookingSummary.css'
 
 const BookingSummary = ({ rooms , info }) => {
 
     const [userData, setUserData] = useState();
     const [totalCost , setTotalCost] = useState({total: 0  , tax : 0 , eachRoomTotalCost: []});
-    
+    const navigator = useNavigate();
     
     useEffect(() => {
         setUserData({check_in: info.check_in , check_out: info.check_out , adults_count: info.adults , children_count: info.children , rooms: info.rooms})
@@ -31,10 +32,6 @@ const BookingSummary = ({ rooms , info }) => {
         setTotalCost({total: sum + (0.09 * sum) + 10 , tax: 0.09 * sum , eachRoomTotalCost})
     } , [rooms , info])
 
-    useEffect(() => {
-        
-    } , [totalCost])
-
     const handleClick = async(e) => {
         e.preventDefault();
         /* console.log(userData);
@@ -44,7 +41,10 @@ const BookingSummary = ({ rooms , info }) => {
         console.log(dataForAPI)
 
         const {data} = await sendReservationData(dataForAPI);
-        console.log(data);
+        
+        if(data?.isCreated){
+            navigator('/')
+        }
 
     }
 

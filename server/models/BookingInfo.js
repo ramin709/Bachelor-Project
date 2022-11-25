@@ -6,9 +6,7 @@ const BookingInfoScheme = mongoose.Schema({
     check_out: { type: Date, required: true },
     adult_count: Number,
     children_count: Number,
-    total_cost: {type: [Number], required: true},
-    rooms_number: {type: [Number], required: true},
-    rooms_type: {type: [String], required: true},
+    roomsInfo: [{room_name: String, count: Number , room_number: [Number] , total_cost: Number}]
 });
 
 export default mongoose.model('Booking_info' , BookingInfoScheme);

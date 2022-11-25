@@ -22,32 +22,32 @@ export const getReservationData = async (req, res) => {
 
 }
 
-export const findAndReserveRoom = async (roomType) => {
-    try {
-        const roomNumber = await findEmptyRoom();
-        console.log(roomNumber);
-        return true;
-    } catch (error) {
-        console.log(error.message);
-    }
-
-    return false;
-}
-
 export const reserveRooms = async (req, res) => {
-    const { check_in, check_out, adult_count, children_count, rooms, total_cost } = req.body;
+    const { check_in, check_out, adults_count, children_count, rooms, eachRoomTotalCost } = req.body;
     const userId = req.id;
     const { username } = await UserDocument.findOne({ _id: userId });
-    console.log(rooms)
-    var bookedRooms = [];
+    var room_number = [];
 
-    rooms.forEach(async (room) => {
-        for (var i = 0; i < Number(room.count); i++) {
-            console.log(await findAndReserveRoom(room.room_name))
-        }
-        console.log(bookedRooms);
-    })
+    for (let i = 0; i < rooms.length; i++) {
+        room_number = await findEmptyRoom(rooms[i].room_name, rooms[i].count);
+        rooms[i] = { ...rooms[i], room_number: room_number, total_cost: eachRoomTotalCost[i] }
+    }
 
+    const data = { check_in, check_out, adults_count: Number(adults_count), children: Number(children_count), owner: username, roomsInfo: rooms }
+    
+    try {
+        await bookingInfoDocument.create(data);
+        res.status(200).json({isCreated: true});
+    } catch (error) {
+        console.log(error);
+    }
 
+}
+
+export const getReservationHistory = async(req , res) => {
+    const userId = req.id;
+    const {username} = await UserDocument.findOne({_id: userId});
+    const reservationHistory = await bookingInfoDocument.find({owner: username});
+    res.status(200).json(reservationHistory);
 }
 
