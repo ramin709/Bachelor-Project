@@ -8,6 +8,7 @@ const ProfileMainCard = ({ user }) => {
     const EDIT_PASSWORD = 'Edit Password'
     const History = 'Reserve History'
 
+    console.log(user);
 
     const [activeTab, setActiveTab] = useState(EDIT_PROFILE);
     const [enableEdit, setEnableEdit] = useState(false);
@@ -155,7 +156,7 @@ const ProfileMainCard = ({ user }) => {
                                         <label htmlFor="male" className="radioLabel">Male
                                             <input className="profileRadioInput" name="gender" type="radio" value="male" id="male"
                                                 disabled={!enableEdit}
-                                                defaultChecked={user?.gender === "male" ? true : false}
+                                                defaultChecked={user?.gender === "male" ? true: null}
                                                 onChange={(e) => setProfileFormData({ ...profileFormData, gender: e.target.value })} />
                                             <span className="checkmark"></span>
                                         </label>
@@ -164,7 +165,7 @@ const ProfileMainCard = ({ user }) => {
                                         <label htmlFor="female" className="radioLabel">Female
                                             <input className="profileRadioInput" name="gender" type="radio" value="female" id="female"
                                                 disabled={!enableEdit}
-                                                defaultChecked={user?.gender === "female" ? true : false}
+                                                defaultChecked={user?.gender === "female" ? true: null}
                                                 onChange={(e) => setProfileFormData({ ...profileFormData, gender: e.target.value })} />
                                             <span className="checkmark"></span>
                                         </label>
@@ -232,8 +233,9 @@ const ProfileMainCard = ({ user }) => {
                                                             return (
                                                                 <tr className="profileTableRow">
                                                                     <td className="profileTableBodyCell">
-                                                                        {new Date(singleHistory.check_in).toDateString()}
+                                                                        {new Date(singleHistory.check_in).toDateString()} &nbsp;
                                                                         to
+                                                                        &nbsp;
                                                                         {new Date(singleHistory.check_out).toDateString()}
                                                                     </td>
                                                                     <td className="profileTableBodyCell">{room}</td>

@@ -7,10 +7,10 @@ const UserScheme = mongoose.Schema({
     password: {type: String, required: true},
     phone_number: {type: String, default: ''},
     birthday: {type: String, default: ''},
+    email: {type: String, default: ''},
     gender: {type: String, maxlength: 6, default: ''},
     profile_img: {type: String, default: ''},
     is_checked: {type: Boolean , default: false},
-    reviews: [{review: String , rating: Number}]
 });
 
 const User = mongoose.model('User', UserScheme);

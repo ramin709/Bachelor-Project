@@ -44,7 +44,7 @@ export const changePassword = async (req, res) => {
 export const editUserInfo = async (req, res) => {
     const userId = req.id;
     const { username, first_name, last_name, email, phone, gender, birth_date } = req.body;
-    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, first_name, last_name, email, phone, gender, birth_date });
+    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, first_name, last_name, email,phone_number: phone, gender, birthday: birth_date });
     res.status(200).json({ user: userWithNewInfo });
 }
 
@@ -122,4 +122,11 @@ export const getStatsInfo = async (req, res) => {
     const positiveRatingReviewsCount = await getMostPositiveRatings();
 
     res.status(200).json({ rooms_count: roomsCount, staff_count: staffCount, guests_count: usersCount, positive_ratings_count: positiveRatingReviewsCount })
+}
+
+export const changeProfileImg = async (req, res) => {
+    const userId = req.id;
+    const relatedUser = await UserDocument.findByIdAndUpdate(userId , {profile_img: `./images/${req.file.originalname}`});
+
+    res.status(200).json({relatedUser})
 }
