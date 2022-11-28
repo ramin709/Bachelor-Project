@@ -48,7 +48,7 @@ const Table = () => {
 
     let [searchParams, setSearchParams] = useSearchParams();
     const [recommended, setRecomended] = useState([])
-    const [reserved, setReserved] = useState({ rooms: [] })
+    const [reserved, setReserved] = useState({ rooms: new Map() })
     const navigator = useNavigate();
 
     const ref = useRef();
@@ -71,11 +71,7 @@ const Table = () => {
                 }
 
                 const { data } = await fetchBookNow(readyData);
-                console.log(data)
                 const { Error, response } = data
-                console.log(Error)
-                console.log(response)
-                console.log(response.length);
                 if (response.length > 0) {
 
                     setRecomended(response)
@@ -83,19 +79,12 @@ const Table = () => {
                     ref.current.textContent = Error.checkOut
                     setRecomended(null)
                 }
-
-
-
             }
 
             if (!checkIn) {
                 const { data } = await getBookNow();
-                /* console.log(data); */
                 setRecomended(data);
-            }
-
-
-            else {
+            }else {
                 console.log('empty');
             }
         }
@@ -106,19 +95,20 @@ const Table = () => {
     }, [searchParams])
 
 
-    /* console.log(recommended);
-    console.log(reserved); */
+    console.log(recommended);
+    console.log(reserved);
 
     const handleForm = (e) => {
         e.preventDefault();
-        /* console.log(reserved); */
 
         if (reserved?.checkIn) {
 
-            if (reserved?.rooms.length > 0) {
+            if (reserved?.rooms.size > 0) {
                 var listOfRooms = '';
-                for (let index = 0; index < reserved.rooms.length; index++) {
-                    listOfRooms += '&' + Object.keys(reserved.rooms[index]) + '=' + Object.values(reserved.rooms[index])
+                const newReserved = [...reserved.rooms.entries()]
+                console.log(newReserved);
+                for (let index = 0; index < newReserved.length; index++) {
+                    listOfRooms += '&' + newReserved[index][0] + '=' + newReserved[index][1]
                 }
 
                 const url = `/Booking?checkIn=${reserved?.checkIn}&checkOut=${reserved?.checkOut}&adults=`
@@ -134,8 +124,13 @@ const Table = () => {
 
     const handleChange = (e, roomName) => {
         /* console.log(e.target.value, roomName); */
+        var existingRoom = reserved.rooms.get(roomName);
+        if(existingRoom) {
+            console.log(true);
+            console.log(existingRoom)
+        }
 
-        setReserved({ ...reserved, rooms: [...reserved.rooms, { [roomName]: e.target.value }] });
+        setReserved({ ...reserved, rooms: reserved.rooms.set(roomName , e.target.value) });
     }
 
     return (

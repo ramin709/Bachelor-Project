@@ -16,7 +16,6 @@ const Navbar = ({ covered }) => {
   const [visibility, setVisibility] = useState(false);
   const [open, setOpen] = useState(false);
   const refresh = localStorage.getItem('refresh')
-  console.log(refresh)
 
   const checkScroll = () => {
     if (window.scrollY >= 500 && !visibility) {
