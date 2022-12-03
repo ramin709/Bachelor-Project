@@ -7,53 +7,54 @@ export const getRoomCounts = async (req, res) => {
     return roomCounts;
 }
 
+const removeDuplicates = (allRoomTypeAvailable) => {
+    var allRoomTypesAvailableWithoutDuplicates = [];
+    var response = null;
+
+    allRoomTypeAvailable.forEach(roomType => {
+
+        var isExists = false;
+        if (allRoomTypesAvailableWithoutDuplicates.length > 0) {
+            allRoomTypesAvailableWithoutDuplicates.forEach(item => {
+                if (item.room_name === roomType.room_name) {
+                    isExists = true;
+                }
+            })
+            if (!isExists) {
+                allRoomTypesAvailableWithoutDuplicates.push(roomType);
+            }
+        } else {
+            allRoomTypesAvailableWithoutDuplicates.push(roomType);
+        }
+
+        response = allRoomTypesAvailableWithoutDuplicates;
+    })
+    return response;
+}
+
 export const getAvailableRoomTypes = async (req, res) => {
     const { rooms, adults, children } = req.body;
     const numberOfPeople = Number(children) + Number(adults)
-    const allRooms = await RoomDocument.find();
-    const availableRooms = allRooms.filter(room => !room.is_checked && !room.is_booked);
+    const allRooms = await RoomDocument.find({is_booked: false , is_checked: false});
     const allRoomTypes = await RoomTypeDocument.find();
     var allRoomTypeAvailable = [];
-    var allRoomTypesAvailableWithoutDuplicates = [];
     var response = null;
     var Error = null;
 
     if (numberOfPeople < Number(rooms)) {
         Error = 'Room number cannot be less than number of people';
-    } else if(availableRooms === null){
+    } else if(allRooms === null){
         response = allRoomTypes;
         Error = 'No Room found with this information';
     } else {
-        availableRooms.forEach(room => {
+        allRooms.forEach(room => {
             allRoomTypes.forEach(roomType => {
                 if (roomType.room_name === room.room_name) {
                     allRoomTypeAvailable.push(roomType);
                 }
             })
-        })
 
-        allRoomTypeAvailable.forEach(roomType => {
-
-            var isExists = false;
-            if (allRoomTypesAvailableWithoutDuplicates.length > 0) {
-                allRoomTypesAvailableWithoutDuplicates.forEach(item => {
-                    /* console.log('roomType.room_name', roomType.room_name);
-                    console.log('item.room_name', item.room_name); */
-                    if (item.room_name === roomType.room_name) {
-                        /* console.log('count up') */
-                        isExists = true;
-                    }
-                })
-                if (!isExists) {
-                    /* console.log('enter') */
-                    allRoomTypesAvailableWithoutDuplicates.push(roomType);
-                }
-            } else {
-                allRoomTypesAvailableWithoutDuplicates.push(roomType);
-            }
-
-            response = allRoomTypesAvailableWithoutDuplicates;
-            
+            response = removeDuplicates(allRoomTypeAvailable);
         })
     }
     

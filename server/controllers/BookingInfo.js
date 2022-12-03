@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bookingInfoDocument from '../models/BookingInfo.js'
 import RoomTypeDocument from '../models/RoomType.js'
 import UserDocument from '../models/User.js'
+import RoomDocument from '../models/Room.js'
 import { findEmptyRoom, bookRoom } from './Room.js'
 
 export const getReservationData = async (req, res) => {
@@ -33,6 +34,10 @@ export const reserveRooms = async (req, res) => {
         rooms[i] = { ...rooms[i], room_number: room_number, total_cost: eachRoomTotalCost[i] }
     }
 
+    for(let j=0; j< rooms.length; j++) {
+        await RoomDocument.findOneAndUpdate({ room_number: rooms[j].room_number} , {is_booked : true});
+    }
+
     const data = { check_in, check_out, adults_count: Number(adults_count), children: Number(children_count), owner: username, roomsInfo: rooms }
     
     try {
@@ -41,7 +46,6 @@ export const reserveRooms = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-
 }
 
 export const getReservationHistory = async(req , res) => {

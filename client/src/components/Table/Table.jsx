@@ -73,7 +73,7 @@ const Table = () => {
                 const { data } = await fetchBookNow(readyData);
                 const { Error, response } = data
                 if (response.length > 0) {
-
+                    console.log(response)
                     setRecomended(response)
                 } else {
                     ref.current.textContent = Error.checkOut
