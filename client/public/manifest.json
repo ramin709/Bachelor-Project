@@ -1,25 +1,38 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Hotel App",
+  "name": "Hotel Reservation App",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src":"icon-hotel-72.png",
+      "type":"image/png",
+      "sizes": "72x72"
     },
     {
-      "src": "logo192.png",
+      "src":"icon-hotel-96.png",
+      "type":"image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src":"icon-hotel-128.png",
+      "type":"image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "icon-hotel-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/index.html",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation" : "portrait-primary"
 }

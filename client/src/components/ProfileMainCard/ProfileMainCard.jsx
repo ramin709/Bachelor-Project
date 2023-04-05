@@ -51,7 +51,6 @@ const ProfileMainCard = ({ user }) => {
     }
 
     const handleTabChange = (tab) => {
-        /* activeTab === EDIT_PROFILE ? setActiveTab(EDIT_PASSWORD) : setActiveTab(EDIT_PROFILE) */
 
         switch (tab) {
             case EDIT_PROFILE:
@@ -247,36 +246,6 @@ const ProfileMainCard = ({ user }) => {
                                                     )
                                                 )
                                             }
-                                            {/* <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
-                                            <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
-                                            <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
-                                            <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr>
-                                            <tr className="profileTableRow">
-                                                <td className="profileTableBodyCell">Wed Oct 12 2022 to Thu Oct 20 2022</td>
-                                                <td className="profileTableBodyCell">202</td>
-                                                <td className="profileTableBodyCell">Medium Royal</td>
-                                                <td className="profileTableBodyCell">$ 184.4</td>
-                                            </tr> */}
                                         </tbody>
                                     </table>
                                 </div>

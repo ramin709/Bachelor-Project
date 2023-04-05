@@ -1,7 +1,6 @@
 .profileSideBarContainer{
     flex: 2;
     margin: 10px;
-    min-height: 80vh;
     height: 80vh;
     display: flex;
     flex-direction: column;

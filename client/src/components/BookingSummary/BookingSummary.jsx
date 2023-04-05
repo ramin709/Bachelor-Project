@@ -34,8 +34,6 @@ const BookingSummary = ({ rooms , info }) => {
 
     const handleClick = async(e) => {
         e.preventDefault();
-        /* console.log(userData);
-        console.log(totalCost); */
 
         const dataForAPI = {...userData, eachRoomTotalCost: totalCost?.eachRoomTotalCost};
         console.log(dataForAPI)

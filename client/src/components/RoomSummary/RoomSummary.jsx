@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from '../Table/Table'
+import Icon  from '../Table/Icon/Icon'
 import './RoomSummary.css'
 
 const RoomSummary = ({ services }) => {
