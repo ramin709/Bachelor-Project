@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserDocument from '../models/User.js';
 import ReviewsDocument from '../models/Reviews.js';
+import BookingsDocument from '../models/BookingInfo.js'
 import { getRoomCounts } from './Room.js';
 
 const userCounts = async () => {
@@ -129,4 +130,15 @@ export const changeProfileImg = async (req, res) => {
     const relatedUser = await UserDocument.findByIdAndUpdate(userId , {profile_img: `./images/${req.file.originalname}`});
 
     res.status(200).json({relatedUser})
+}
+
+export const addReviewToUser = async (req, res) => {
+    console.log(req.body.reservationId)
+    const relatedReservation = await BookingsDocument.findById(req.body.reservationId);
+    console.log(relatedReservation);
+    const user = await UserDocument.findOne({username: relatedReservation?.owner});
+    console.log(user);
+    user.reviews.push({reservationId: req.body.reservationId , rating: req.body.rating , review: req.body.review});
+    const result = await UserDocument.findOneAndUpdate(user._id , {reviews: user.reviews})
+    res.status(200).json(result); 
 }

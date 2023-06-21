@@ -24,3 +24,4 @@ export const getUserData = (userId) => API.get(`/user/${userId}`);
 export const sendChangePassData = (data) => API.patch('/user/ChangePassword/' , data);
 export const sendProfileChange = (data) => API.patch('/user/Profile/' , data);
 export const changeProfileImg = (data) => API.patch('/user/changeProfileImg/' , data);
+export const addReview = (data) => API.post('/user/addReview' , data);

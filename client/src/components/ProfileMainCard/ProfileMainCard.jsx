@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { sendProfileChange, sendChangePassData, getReservationHistory } from '../../api/api'
+import { sendProfileChange, sendChangePassData, getReservationHistory, addReview } from '../../api/api'
 import './ProfileMainCard.css'
+import {AiFillCloseCircle} from 'react-icons/ai'
+import Rating from '@mui/material/Rating';
 
 const ProfileMainCard = ({ user }) => {
 
@@ -12,6 +14,8 @@ const ProfileMainCard = ({ user }) => {
 
     const [activeTab, setActiveTab] = useState(EDIT_PROFILE);
     const [enableEdit, setEnableEdit] = useState(false);
+    const [activeReview , setActiveReview] = useState('');
+    const [review , setReview] = useState({rating: 0 , review: ''})
     const [history, setHistory] = useState([]);
     const ref = useRef();
     const [profileFormData, setProfileFormData] = useState({
@@ -69,6 +73,8 @@ const ProfileMainCard = ({ user }) => {
         setEnableEdit(false)
     }
 
+console.log(history)
+
     const handleChangeInfo = async (e) => {
         e.preventDefault();
 
@@ -82,6 +88,17 @@ const ProfileMainCard = ({ user }) => {
 
         const data = await sendChangePassData(passwordFormData);
         console.log(data);
+    }
+
+    const closeAddReview = (e) => {
+        if (e.target.className === "overlay" || (e.target.localName === "path" || e.target.localName === "svg")) {
+            setActiveReview({ rating: 0, review: '' });
+            setReview({ review: '', rating: 0 });
+        }
+    }
+
+    const sendReview = async() => {
+        await addReview({ ...review, reservationId: activeReview?._id });
     }
 
     return (
@@ -222,6 +239,7 @@ const ProfileMainCard = ({ user }) => {
                                                 <th className="profileTableHeaderCell">No.Room</th>
                                                 <th className="profileTableHeaderCell">Room Type</th>
                                                 <th className="profileTableHeaderCell">Cost</th>
+                                                <th className="profileTableHeaderCell">Review</th>
                                             </tr>
                                         </thead>
                                         <tbody className="profileTableBody">
@@ -240,6 +258,7 @@ const ProfileMainCard = ({ user }) => {
                                                                     <td className="profileTableBodyCell">{room}</td>
                                                                     <td className="profileTableBodyCell">{roomInfo.room_name}</td>
                                                                     <td className="profileTableBodyCell">$ {roomInfo.total_cost / roomInfo.count}</td>
+                                                                    <td className="profileTableBodyCell" > <button className="addReviewBtn" onClick={() => setActiveReview(singleHistory)}>{singleHistory?.review ? 'Preview' : 'Add Review'}</button></td>
                                                                 </tr>
                                                             )
                                                         })
@@ -248,6 +267,36 @@ const ProfileMainCard = ({ user }) => {
                                             }
                                         </tbody>
                                     </table>
+                                    <div className="overlay" style={activeReview?._id ? { display: 'initial' } : { display: 'none' }} onClick={(e) => closeAddReview(e)}>
+                                        <div className="addReviewCard" >
+                                            <div className="addReviewCardContainer">
+                                                <div className="addReviewCardHeader">
+                                                    <h4 className="addReviewTitle">Write a review</h4>
+                                                    <div className="addReviewCardCloseIcon">
+                                                        <AiFillCloseCircle style={{ width: '100%', height: '100%' }} onClick={(e) => closeAddReview(e)} />
+                                                    </div>
+                                                </div>
+
+                                                <div className="addReviewContent">
+                                                    <div className="addReviewInputContainer">
+                                                        <label htmlFor="rating" className="addReviewLabel">Rating</label>
+                                                        <Rating id="rating" className="ratingComp" readOnly={activeReview?.review ? true : false} value={activeReview?.rating ? activeReview.rating : review.rating} onChange={(e) => setReview({ ...review, rating: e.target.value })}></Rating>
+                                                    </div>
+
+                                                    <div className="addReviewTextContainer">
+                                                        <label htmlFor="review" className="addReviewLabel">Review</label>
+                                                        <textarea name="review" id="review" className="addReviewTextarea" disabled={activeReview?.review ? true : false} value={activeReview?.review && activeReview.review} onChange={(e) => setReview({ ...review, review: e.target.value })}></textarea>
+                                                    </div>
+                                                </div>
+
+                                                {
+                                                    activeReview?.review ? null : <div className="addReviewCardFooter">
+                                                        <button className="addReviewBtn" onClick={(e) => sendReview(e)}>Send</button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div> :
 

@@ -267,7 +267,7 @@
     overflow-y: scroll;
 }
 
-.profileTable{
+.profileTable {
     width: 100%;
     height: 90%;
     overflow-y: scroll;
@@ -276,8 +276,8 @@
     border-collapse: collapse;
 }
 
-.profileTableHeader{
-    color:rgb(242, 233, 228);
+.profileTableHeader {
+    color: rgb(242, 233, 228);
     background-color: rgba(27, 27, 48, 0.9);
     position: sticky;
     top: 0;
@@ -286,7 +286,7 @@
     z-index: 2;
 }
 
-.profileTableBody{
+.profileTableBody {
     color: rgba(27, 27, 48, 1);
     width: 100%;
     border: 1px solid red;
@@ -296,11 +296,11 @@
     overflow: scroll;
 }
 
-.profileTableBody .profileTableRow{
+.profileTableBody .profileTableRow {
     height: 100px;
 }
 
-.profileTableBodyCell{
+.profileTableBodyCell {
     text-align: center;
     border: 1px solid rgba(27, 27, 48, 0.9);
     height: 100%;
@@ -309,21 +309,21 @@
 /* width */
 .profileHistory ::-webkit-scrollbar {
     width: 13px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: rgb(219, 212, 208);
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(rgba(27, 27, 48, 0.7) , rgba(27, 27, 48, 0.9));
-    border-radius: 3px;
-  }
+}
 
-  @media (max-width: 1000px) {
-    .profileInputItem{
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(219, 212, 208);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(rgba(27, 27, 48, 0.7), rgba(27, 27, 48, 0.9));
+    border-radius: 3px;
+}
+
+@media (max-width: 1000px) {
+    .profileInputItem {
         width: 100%;
     }
 
@@ -331,9 +331,140 @@
         margin-left: 0px;
     }
 
-    .profilePassItem{
+    .profilePassItem {
         width: 100%;
         flex-direction: column;
     }
-  }
+}
 
+.addReviewBtn {
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(27, 27, 48, 1);
+    color: rgb(242, 233, 228);
+    cursor: pointer;
+    display: block;
+    padding: 5px 10px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.addReviewCard {
+    position: absolute;
+    left: 35%;
+    top: 30%;
+    width: 500px;
+    height: 400px;
+    background-color: #F2E9E4;
+    color: rgba(27, 27, 48, 1);
+    box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 3;
+}
+
+.addReviewCardContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.addReviewCardHeader, .addReviewCardFooter {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.addReviewCardFooter {
+    height: 20%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.addReviewTitle {
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.addReviewCardCloseIcon {
+    width: 40px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.addReviewContent {
+    width: 100%;
+    height: 70%;
+    margin-top: 10px;
+}
+
+.addReviewInputContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.addReviewLabel {
+    margin-right: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.addReviewTextContainer {
+    /* width: 100%; */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    margin-top: 20px;
+}
+
+.addReviewTextarea {
+    box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    outline: none;
+    resize: none;
+    margin-top: 10px;
+    font-size: 1rem;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgb(219, 212, 208);
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(27, 27, 48, 0.9);
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.addReviewCardBtn {
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(27, 27, 48, 1);
+    color: rgb(242, 233, 228);
+    cursor: pointer;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 10px;
+}

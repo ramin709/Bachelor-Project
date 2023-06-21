@@ -1,5 +1,5 @@
 import express from 'express';
-import {changePassword ,changeProfileImg , editUserInfo , getFeaturedReviews, getUser , signIn, signUp , getStatsInfo }  from '../controllers/User.js';
+import {changePassword ,changeProfileImg , editUserInfo , getFeaturedReviews, getUser , signIn, signUp , getStatsInfo, addReviewToUser }  from '../controllers/User.js';
 import {auth} from '../middlewares/auth.js';
 import multer from 'multer'
 
@@ -25,5 +25,6 @@ router.patch('/ChangePassword/' , auth ,changePassword);
 router.patch('/Profile/' , auth ,editUserInfo);
 router.patch('/changeProfileImg/'  , auth,upload.single('file')  , changeProfileImg);
 router.get('/:id' , auth ,getUser);
+router.post('/addReview' , addReviewToUser);
 
 export default router;

@@ -11,6 +11,7 @@ const UserScheme = mongoose.Schema({
     gender: {type: String, maxlength: 6, default: ''},
     profile_img: {type: String, default: ''},
     is_checked: {type: Boolean , default: false},
+    reviews: {type: [{reservationId: mongoose.Schema.Types.ObjectId , rating: Number , review: String}] , default: []}
 });
 
 const User = mongoose.model('User', UserScheme);
