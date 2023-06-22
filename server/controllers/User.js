@@ -1,11 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserDocument from '../models/User.js';
-import ReviewsDocument from '../models/Reviews.js';
 import BookingsDocument from '../models/BookingInfo.js'
 import { getRoomCounts } from './Room.js';
 
-const userCounts = async () => {
+/* const userCounts = async () => {
     const numberOfUsers = await UserDocument.count();
     return numberOfUsers;
 }
@@ -44,13 +43,13 @@ export const changePassword = async (req, res) => {
 
 export const editUserInfo = async (req, res) => {
     const userId = req.id;
-    const { username, first_name, last_name, email, phone, gender, birth_date } = req.body;
-    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, first_name, last_name, email,phone_number: phone, gender, birthday: birth_date });
+    const { username, firstName, lastName, email, phone, gender, birth_date } = req.body;
+    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, firstName, lastName, email,phone_number: phone, gender, birthday: birth_date });
     res.status(200).json({ user: userWithNewInfo });
 }
-
+ */
 export const signUp = async (req, res) => {
-    const { first_name, last_name, check, password, confirm_password, username } = req.body;
+    const { firstName, lastName, check, password, confirm_password, username } = req.body;
     try {
         const existingUser = await UserDocument.findOne({ username });
 
@@ -62,7 +61,7 @@ export const signUp = async (req, res) => {
             res.status(400).json({ message: 'Password does not match with confirm password' });
         }
 
-        const newUser = await UserDocument.create({ username, password: await bcrypt.hash(password, 12), first_name, last_name });
+        const newUser = await UserDocument.create({ username, password: await bcrypt.hash(password, 12), firstName, lastName });
         const refresh = jwt.sign({ id: newUser._id }, 'test', { expiresIn: '1h' });
         const access = jwt.sign({ id: newUser._id }, 'test', { expiresIn: '5m' });
         console.log(access);
@@ -98,7 +97,7 @@ export const signIn = async (req, res) => {
     }
 }
 
-export const getFeaturedReviews = async (req, res) => {
+/* export const getFeaturedReviews = async (req, res) => {
     const allReviews = await ReviewsDocument.find({ rating: { $gte: 4 } });
 
     const allUsers = await UserDocument.find();
@@ -107,7 +106,7 @@ export const getFeaturedReviews = async (req, res) => {
     allUsers.forEach(user => {
         allReviews.forEach(singleReview => {
             if (user._id.toString() == singleReview.user_id.toString()) {
-                reviewsWithUserInfo.push({ first_name: user.first_name, last_name: user.last_name, profile_img: user.profile_img, review: singleReview.review, rating: singleReview.rating });
+                reviewsWithUserInfo.push({ firstName: user.firstName, lastName: user.lastName, profile_img: user.profile_img, review: singleReview.review, rating: singleReview.rating });
             }
         })
     });
@@ -141,4 +140,4 @@ export const addReviewToUser = async (req, res) => {
     user.reviews.push({reservationId: req.body.reservationId , rating: req.body.rating , review: req.body.review});
     const result = await UserDocument.findOneAndUpdate(user._id , {reviews: user.reviews})
     res.status(200).json(result); 
-}
+} */

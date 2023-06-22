@@ -6,11 +6,11 @@ import {signInUser, signUpUser} from '../../redux/actions/user.js'
 import './Sign.css'
 const Sign = ({ signUp }) => {
 
-    const [SignData, setSignData] = useState({ username: '', password: '', confirm_password: '', first_name: '', last_name: '', check: '' })
+    const [SignData, setSignData] = useState({ username: '', password: '', confirm_password: '', firstName: '', lastName: '', check: '' })
     const [submit, setSubmit] = useState(false);
     const dispath = useDispatch();
     const [loginData, setLoginData] = useState({ username: '', password: '' })
-    var inputList = { username: '', password: '', confirm_password: '', first_name: '', last_name: '', check: '' }
+    var inputList = { username: '', password: '', confirm_password: '', firstName: '', lastName: '', check: '' }
 
     const navigator = useNavigate();
 
@@ -62,8 +62,8 @@ const Sign = ({ signUp }) => {
                 username: inputList.username,
                 password: inputList.password,
                 confirm_password: inputList.confirm_password,
-                first_name: inputList.first_name,
-                last_name: inputList.last_name
+                firstName: inputList.firstName,
+                lastName: inputList.lastName
             });
         } else {
             if(signUp){
@@ -97,16 +97,16 @@ const Sign = ({ signUp }) => {
                             <input type="text"
                                 className="inputs"
                                 placeholder="First Name"
-                                onChange={(e) => setSignData({ ...SignData, first_name: e.target.value })}
-                                style={submit.first_name === true ? style : null}
+                                onChange={(e) => setSignData({ ...SignData, firstName: e.target.value })}
+                                style={submit.firstName === true ? style : null}
                                 onFocus={() => { errorRef.current.textContent = ''; setSubmit(false); }}
                             />
 
                             <input type="text"
                                 className="inputs"
                                 placeholder="Last Name"
-                                onChange={(e) => setSignData({ ...SignData, last_name: e.target.value })}
-                                style={submit.last_name === true ? style : null}
+                                onChange={(e) => setSignData({ ...SignData, lastName: e.target.value })}
+                                style={submit.lastName === true ? style : null}
                                 onFocus={() => { errorRef.current.textContent = ''; setSubmit(false); }}
                             />
 

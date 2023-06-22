@@ -4,7 +4,7 @@ import { fetchFeaturedRooms } from '../../api/api'
 
 const FeaturedRooms = () => {
 
-    const [rooms, setRooms] = useState([{room_name: '' , cost_per_day: 0 , room_pictures: [] , description: ''}])
+    const [rooms, setRooms] = useState([{name: '' , costPerDay: 0 , roomImg: [] , description: ''}])
 
     useEffect(() => {
         const getData = async() => {
@@ -27,11 +27,11 @@ const FeaturedRooms = () => {
                 {rooms.map((room ,index) => 
                     (<div className="featuredRoom" key={index}>
                         <div className="imageSection">
-                            {<img src={room?.room_img} alt={room.room_name} />}
+                            {<img src={room?.roomImg} alt={room.name} />}
                         </div>
                         <div className="infoSection">
-                            <h4 className="infoSectionTitle">{room.room_name}</h4>
-                            <span className="cost">${room.cost_per_day}/Night</span>
+                            <h4 className="infoSectionTitle">{room.name}</h4>
+                            <span className="cost">${room.costPerDay}/Night</span>
                             <p className="infoDescription">
                                 {room.description}
                             </p>
