@@ -35,20 +35,20 @@ const Table = () => {
                 }
 
                 const { data } = await fetchBookNow(readyData);
-                const { Error, response } = data
-                if (response.length > 0) {
-                    console.log(response)
-                    setRecomended(response)
-                } else {
-                    ref.current.textContent = Error.checkOut
-                    setRecomended(null)
-                }
+                /* const { Error, response } = data */
+                //if (response.length > 0) {
+                console.log(data)
+                setRecomended(data)
+                //} else {
+                /*    ref.current.textContent = Error.checkOut
+                   setRecomended(null)
+               } */
             }
 
             if (!checkIn) {
                 const { data } = await getBookNow();
                 setRecomended(data);
-            }else {
+            } else {
                 console.log('empty');
             }
         }
@@ -83,14 +83,14 @@ const Table = () => {
 
     const handleChange = (e, roomName) => {
         var existingRoom = reserved.rooms.get(roomName);
-        if(existingRoom) {
+        if (existingRoom) {
             console.log(true);
             console.log(existingRoom)
         }
 
-        setReserved({ ...reserved, rooms: reserved.rooms.set(roomName , e.target.value) });
+        setReserved({ ...reserved, rooms: reserved.rooms.set(roomName, e.target.value) });
     }
-
+    console.log(reserved)
     return (
         <>
             <h2 className="title" ref={ref}>{ }</h2>
@@ -114,7 +114,7 @@ const Table = () => {
                                 <tr key={index}>
                                     <td className="tableCells" id="tempHeader">
                                         <h4 className="titleRoom">
-                                            {room.room_name}
+                                            {room.name}
                                         </h4>
                                     </td>
                                     <td className="smallTableCells">
@@ -124,13 +124,13 @@ const Table = () => {
                                     </td>
                                     <td className="tableCells">
                                         <span className="roomCost">
-                                            {room.cost_per_day} $
+                                            {room.costPerDay} $
                                         </span>
                                     </td>
                                     <td className="tableCellsService">
                                         <div className="tableCellContainer">
                                             <div className="servicesContainer">
-                                                {
+                                                {/* {
                                                     room.services.map((service, index) => <span key={index}>{
                                                         <div className="services">
                                                             <Icon item={service} />
@@ -139,29 +139,29 @@ const Table = () => {
 
                                                     }</span>)
 
-                                                }
+                                                } */}
                                             </div>
                                         </div>
                                     </td>
                                     <td className="tableCells">
-                                        <select name="" id="" className="tableSelect" onChange={(e) => handleChange(e, room.room_name)}>
+                                        <select name="" id="" className="tableSelect" onChange={(e) => handleChange(e, room.name)}>
                                             {
 
-                                                room.room_count - room.booked_count > 6 ?
+                                                room?.vacantCount >= 6 ?
                                                     <>
-                                                        <option value="0">0 &nbsp; &nbsp; &nbsp; ({0 * room.cost_per_day}$)</option>
-                                                        <option value="1">1 &nbsp; &nbsp; &nbsp; ({1 * room.cost_per_day}$)</option>
-                                                        <option value="2">2 &nbsp; &nbsp; &nbsp; ({2 * room.cost_per_day}$)</option>
-                                                        <option value="3">3 &nbsp; &nbsp; &nbsp; ({3 * room.cost_per_day}$)</option>
-                                                        <option value="4">4 &nbsp; &nbsp; &nbsp; ({4 * room.cost_per_day}$)</option>
-                                                        <option value="5">5 &nbsp; &nbsp; &nbsp; ({5 * room.cost_per_day}$)</option>
-                                                        <option value="6">6 &nbsp; &nbsp; &nbsp; ({6 * room.cost_per_day}$)</option>
+                                                        <option value="0">0 &nbsp; &nbsp; &nbsp; ({0 * room.costPerDay}$)</option>
+                                                        <option value="1">1 &nbsp; &nbsp; &nbsp; ({1 * room.costPerDay}$)</option>
+                                                        <option value="2">2 &nbsp; &nbsp; &nbsp; ({2 * room.costPerDay}$)</option>
+                                                        <option value="3">3 &nbsp; &nbsp; &nbsp; ({3 * room.costPerDay}$)</option>
+                                                        <option value="4">4 &nbsp; &nbsp; &nbsp; ({4 * room.costPerDay}$)</option>
+                                                        <option value="5">5 &nbsp; &nbsp; &nbsp; ({5 * room.costPerDay}$)</option>
+                                                        <option value="6">6 &nbsp; &nbsp; &nbsp; ({6 * room.costPerDay}$)</option>
                                                     </> :
 
                                                     <>
                                                         {
-                                                            [...Array(room.room_count - room.booked_count + 1)].map((cost, number) => (
-                                                                <option value={number}>{number} &nbsp; &nbsp; &nbsp; ({number * room.cost_per_day}$)</option>
+                                                            room?.vacantCount && [...Array(room?.vacantCount + 1)].map((cost, number) => (
+                                                                <option value={number}>{number} &nbsp; &nbsp; &nbsp; ({number * room.costPerDay}$)</option>
                                                             ))
                                                         }
                                                     </>

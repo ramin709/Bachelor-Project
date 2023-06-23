@@ -4,13 +4,13 @@ import './RoomsCard.css'
 
 const RoomsCard = ({rooms , guests}) => {
   return (
-    <div className="RoomsCard">
+    {/* <div className="RoomsCard">
       {
         rooms?.map(room => (
           <RoomCard room={room} key={room.room_name} guest={guests}/>
         ))
       }
-    </div>
+    </div> */}
   )
 }
 

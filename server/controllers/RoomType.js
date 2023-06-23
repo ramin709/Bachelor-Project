@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import RoomTypeDocument from '../models/RoomType.js'
 
 export const getAllRoomTypes = async(req , res) => {

@@ -8,19 +8,23 @@ const BookingSummary = ({ rooms , info }) => {
     const [userData, setUserData] = useState();
     const [totalCost , setTotalCost] = useState({total: 0  , tax : 0 , eachRoomTotalCost: []});
     const navigator = useNavigate();
+    console.log(rooms);
+    console.log(info)
     
     useEffect(() => {
-        setUserData({check_in: info.check_in , check_out: info.check_out , adults_count: info.adults , children_count: info.children , rooms: info.rooms})
+        setUserData({checkIn: info.checkIn , checkOut: info.checkOut , adults_count: info.adults , children_count: info.children , rooms: info.rooms})
     } , [info])
     
     useEffect(() => {
         
         var eachRoomTotalCost = [];
         const roomsData = info?.rooms
+        console.log(roomsData);
         const sum = roomsData?.reduce((sum, singleRoom) => {
             
-            const currentRoom = rooms?.find(currentRoomItem => currentRoomItem.room_name === singleRoom.room_name)
-            const costPerDay = Number(currentRoom?.cost_per_day);
+            const currentRoom = rooms?.find(currentRoomItem => currentRoomItem.name === singleRoom.name)
+            console.log(currentRoom)
+            const costPerDay = Number(currentRoom?.costPerDay);
             const roomCount = Number(singleRoom?.count);
             const total = (costPerDay * roomCount);
 
@@ -31,6 +35,7 @@ const BookingSummary = ({ rooms , info }) => {
 
         setTotalCost({total: sum + (0.09 * sum) + 10 , tax: 0.09 * sum , eachRoomTotalCost})
     } , [rooms , info])
+
 
     const handleClick = async(e) => {
         e.preventDefault();
@@ -56,8 +61,8 @@ const BookingSummary = ({ rooms , info }) => {
                 <div className="prices">
                     {
                         rooms?.map((room , index) => (
-                            <div className="signlePrice" key={room.room_name}>
-                                <h4 className="priceTitle">{room.room_name}</h4>
+                            <div className="signlePrice" key={room.name}>
+                                <h4 className="priceTitle">{room.name}</h4>
                                 <span className="priceQuantity">$ {
                                     totalCost.eachRoomTotalCost[index]
                                 }</span>

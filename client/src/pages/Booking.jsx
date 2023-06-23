@@ -20,20 +20,20 @@ const Booking = () => {
     const params = url.slice(rootUrlLength + 1)
 
     const values = params.split('&');
-    let check_in, check_out, adults, children, rooms = [] ,roomsName = [];
+    let checkIn, checkOut, adults, children, rooms = [] ,roomsName = [];
     for (const key in values) {
       var item = values[key];
       item = item.split('=');
 
       switch (item[0]) {
         case 'checkIn':
-          check_in = item[1];
-          /* console.log(check_in); */
+          checkIn = item[1];
+          /* console.log(checkIn); */
           break;
 
         case 'checkOut':
-          check_out = item[1];
-          /* console.log(check_out); */
+          checkOut = item[1];
+          /* console.log(checkOut); */
           break;
 
         case 'adults':
@@ -48,11 +48,11 @@ const Booking = () => {
 
         default:
           roomsName.push(item[0].replace(/%20/g, " "));
-          rooms.push({ room_name: item[0].replace(/%20/g, " "), count: item[1] });
+          rooms.push({ name: item[0].replace(/%20/g, " "), count: item[1] });
          /*  console.log(rooms); */
 
       }
-        setInfo({check_in , check_out , rooms , adults , children})
+        setInfo({checkIn , checkOut , rooms , adults , children})
     }
 
     const getData = async() => {
@@ -68,8 +68,8 @@ const Booking = () => {
   return (
     <div>
       <Navbar covered />
-      <BookingDetail rooms={info?.rooms} checkIn={info?.check_in} checkOut={info?.check_out} />
-      <RoomsCard rooms={roomData} guests={Number(info?.adults) + Number(info?.children)}/>
+      <BookingDetail rooms={info?.rooms} checkIn={info?.checkIn} checkOut={info?.checkOut} />
+      {/* <RoomsCard rooms={roomData} guests={Number(info?.adults) + Number(info?.children)}/> */}
       <BookingSummary rooms={roomData} info={info} />
       <Footer />
     </div>

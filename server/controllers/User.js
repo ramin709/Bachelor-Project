@@ -4,12 +4,12 @@ import UserDocument from '../models/User.js';
 import BookingsDocument from '../models/BookingInfo.js'
 import { getRoomCounts } from './Room.js';
 
-/* const userCounts = async () => {
+const userCounts = async () => {
     const numberOfUsers = await UserDocument.count();
     return numberOfUsers;
 }
 
-const getMostPositiveRatings = async () => {
+/* const getMostPositiveRatings = async () => {
     const allReviews = await ReviewsDocument.find();
     const mostPositiveRatings = allReviews.filter(review => review.rating >= 4);
     const mostPositiveRatingsCounts = mostPositiveRatings.length;
@@ -46,8 +46,8 @@ export const editUserInfo = async (req, res) => {
     const { username, firstName, lastName, email, phone, gender, birth_date } = req.body;
     const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, firstName, lastName, email,phone_number: phone, gender, birthday: birth_date });
     res.status(200).json({ user: userWithNewInfo });
-}
- */
+} */
+
 export const signUp = async (req, res) => {
     const { firstName, lastName, check, password, confirm_password, username } = req.body;
     try {
@@ -97,8 +97,8 @@ export const signIn = async (req, res) => {
     }
 }
 
-/* export const getFeaturedReviews = async (req, res) => {
-    const allReviews = await ReviewsDocument.find({ rating: { $gte: 4 } });
+export const getFeaturedReviews = async (req, res) => {
+    /* const allReviews = await ReviewsDocument.find({ rating: { $gte: 4 } });
 
     const allUsers = await UserDocument.find();
     var reviewsWithUserInfo = [];
@@ -109,22 +109,25 @@ export const signIn = async (req, res) => {
                 reviewsWithUserInfo.push({ firstName: user.firstName, lastName: user.lastName, profile_img: user.profile_img, review: singleReview.review, rating: singleReview.rating });
             }
         })
-    });
+    }); */
+
+    /* const allReviews = await BookingsDocument.find({ rating: { $gte: 4}});
+    console.log(allReviews);
 
     res.status(200).json(reviewsWithUserInfo.slice(0, 8));
-
+ */
 }
 
 export const getStatsInfo = async (req, res) => {
     const roomsCount = await getRoomCounts(req, res);
     const staffCount = 1000;
     const usersCount = await userCounts();
-    const positiveRatingReviewsCount = await getMostPositiveRatings();
+    const positiveRatingReviewsCount = /* await getMostPositiveRatings() */ 0;
 
     res.status(200).json({ rooms_count: roomsCount, staff_count: staffCount, guests_count: usersCount, positive_ratings_count: positiveRatingReviewsCount })
 }
 
-export const changeProfileImg = async (req, res) => {
+/* export const changeProfileImg = async (req, res) => {
     const userId = req.id;
     const relatedUser = await UserDocument.findByIdAndUpdate(userId , {profile_img: `./images/${req.file.originalname}`});
 

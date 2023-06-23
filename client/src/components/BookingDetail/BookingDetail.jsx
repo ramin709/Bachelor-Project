@@ -46,8 +46,8 @@ console.log(checkIn)
               </div>
               {
                 rooms?.map((room) => (
-                  <div className="bookingRoomCount" key={room.room_name}>
-                    <h5 className="roomName">{room.room_name}</h5>
+                  <div className="bookingRoomCount" key={room.name}>
+                    <h5 className="roomName">{room.name}</h5>
                     <span className="roomCount">{room.count}</span>
                   </div>
                 ))

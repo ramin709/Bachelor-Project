@@ -1,5 +1,5 @@
 import express from 'express';
-import {/* changePassword ,changeProfileImg , editUserInfo , getFeaturedReviews, getUser , */ signIn, signUp /* , getStatsInfo, addReviewToUser */ }  from '../controllers/User.js';
+import {/* changePassword ,changeProfileImg , editUserInfo , */ getFeaturedReviews, /* getUser , */ signIn, signUp , getStatsInfo, /* addReviewToUser */ }  from '../controllers/User.js';
 import {auth} from '../middlewares/auth.js';
 import multer from 'multer'
 
@@ -17,8 +17,8 @@ const storage = multer.diskStorage({
 
 export const upload = multer({storage});
 
-/* router.get('/Testimonials/' , getFeaturedReviews);
-router.get('/Stats/' , getStatsInfo); */
+router.get('/Testimonials/' , getFeaturedReviews);
+router.get('/Stats/' , getStatsInfo);
 router.post('/SignUp/' , signUp);
 router.post('/SignIn/' , signIn);
 /* router.patch('/ChangePassword/' , auth ,changePassword);

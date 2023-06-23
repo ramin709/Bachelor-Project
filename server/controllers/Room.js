@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import BookingInfoDocument from '../models/BookingInfo.js';
 import RoomDocument from '../models/Room.js'
 import RoomTypeDocument from '../models/RoomType.js'
 
@@ -7,7 +8,45 @@ export const getRoomCounts = async (req, res) => {
     return roomCounts;
 }
 
-const removeDuplicates = (allRoomTypeAvailable) => {
+const changeVacantCount = (roomsList,roomType) => {
+    var newRoomsList = roomsList;
+    newRoomsList.forEach(room => {
+        if(room._id.toString() === roomType._id.toString()){
+            room.vacantCount = room.vacantCount + 1;
+        }
+    })
+    return newRoomsList;
+}
+
+const getFreeRoomTypes = async(rooms) => {
+    const allRoomTypes = await RoomTypeDocument.find();
+    var freeRoomTypes = [];
+    var count = 0;
+    allRoomTypes.forEach(roomType => {
+        console.log('count' , count)
+        count++;
+        rooms.forEach(room => {
+            if(room.roomType.toString() === roomType._id.toString()){
+                //console.log('iterate')
+                /* console.log('room' , room);
+                console.log('roomType' , roomType)
+                console.log('freeRooms' , freeRoomTypes) */
+                const availableRoomType = freeRoomTypes.find(roomTypeFree => roomTypeFree._id.toString() === roomType._id.toString());
+                if(availableRoomType){
+                    //console.log('enter')
+                    freeRoomTypes = changeVacantCount(freeRoomTypes , availableRoomType);
+                }else {
+                    //console.log('enter else')
+                    freeRoomTypes.push({...roomType._doc , vacantCount: 1})
+                }
+            }
+        })
+    })
+
+    return freeRoomTypes;
+}
+
+/* const removeDuplicates = (allRoomTypeAvailable) => {
     var allRoomTypesAvailableWithoutDuplicates = [];
     var response = null;
 
@@ -30,48 +69,33 @@ const removeDuplicates = (allRoomTypeAvailable) => {
         response = allRoomTypesAvailableWithoutDuplicates;
     })
     return response;
-}
+} */
 
 export const getAvailableRoomTypes = async (req, res) => {
     const { rooms, adults, children } = req.body;
-    const numberOfPeople = Number(children) + Number(adults)
-    const allRooms = await RoomDocument.find({is_booked: false , is_checked: false});
-    const allRoomTypes = await RoomTypeDocument.find();
-    var allRoomTypeAvailable = [];
-    var response = null;
-    var Error = null;
-
-    if (numberOfPeople < Number(rooms)) {
-        Error = 'Room number cannot be less than number of people';
-    } else if(allRooms === null){
-        response = allRoomTypes;
-        Error = 'No Room found with this information';
-    } else {
-        allRooms.forEach(room => {
-            allRoomTypes.forEach(roomType => {
-                if (roomType.room_name === room.room_name) {
-                    allRoomTypeAvailable.push(roomType);
-                }
-            })
-
-            response = removeDuplicates(allRoomTypeAvailable);
-        })
+    const numberOfGuests = adults + children;
+    const allRooms = await RoomDocument.find({isChecked: false});
+    if(numberOfGuests >= Number(rooms)){
+        if(allRooms !== null){
+            const freeRooms = await getFreeRoomsInFuture(allRooms , req.body.checkIn);
+            const result = await getFreeRoomTypes(freeRooms);
+            //console.log('Free rooms are',result);
+            res.status(200).json(result);
+        }
     }
     
-    res.status(200).json({response , Error});
 }
 
 export const getAllAvailableRoomTypes = async (req, res) => {
     const allRoomTypes = await RoomTypeDocument.find();
-    var allRoomTypesWithEmptyRoom = allRoomTypes.filter(roomType => (roomType.room_count - roomType.booked_count) !== 0);
-    res.status(200).json(allRoomTypesWithEmptyRoom);
+    res.status(200).json(allRoomTypes);
 }
 
 export const findEmptyRoom = async(roomType , count) => {
     var roomNumbers = []
-    const foundedRooms = await RoomDocument.find({is_booked : false , room_name: roomType}).limit(count);
+    const foundedRooms = await RoomDocument.find({isBooked : false , name: roomType}).limit(count);
     
-    foundedRooms.map(room => roomNumbers.push(room?.room_number));
+    foundedRooms.map(room => roomNumbers.push(room?.roomNumber));
 
     return roomNumbers;
 }
@@ -80,3 +104,21 @@ export const bookRoom = async (roomNumber) => {
     const updatedRoom = await RoomDocument.findOneAndUpdate({room_number: roomNumber} , {is_booked: true} , {returnDocument: 'after'});
    /*  console.log(updatedRoom) */
 }
+
+const getFreeRoomsInFuture = async(rooms , checkInDate) => {
+    var notBookedRooms = rooms.filter(room => room.isBooked === false);
+    console.log(checkInDate)
+    var allReservations = await BookingInfoDocument.find({checkOut: {$lte: new Date(checkInDate)}});
+    allReservations.forEach(reserve => {
+        reserve.rooms.forEach(singleRoom => {
+            rooms.forEach(room => {
+                if(room._id.toString() == singleRoom.toString()){
+                    notBookedRooms.push(room);
+                }
+            })
+        })
+    })
+
+    return notBookedRooms;
+}
+

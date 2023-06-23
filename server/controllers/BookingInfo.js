@@ -11,41 +11,43 @@ export const getReservationData = async (req, res) => {
     var pureRoomsData = [];
 
     for (let i = 0; i < room.length; i++) {
-        roomsData.push(await RoomTypeDocument.find({ room_name: room[i] }))
+        roomsData.push(await RoomTypeDocument.findOne({ room_name: room[i] }))
     }
 
-    roomsData.forEach(room => {
+    /* roomsData.forEach(room => {
         room[0].services = room[0].services.splice(0, 6);
         pureRoomsData.push(room[0]);
-    })
-
-    res.status(200).json(pureRoomsData);
+    }) */
+    console.log(roomsData)
+    res.status(200).json(roomsData);
 
 }
 
 export const reserveRooms = async (req, res) => {
-    const { check_in, check_out, adults_count, children_count, rooms, eachRoomTotalCost } = req.body;
+    const { checkIn, checkOut, adultsCount, childrenCount, rooms, eachRoomTotalCost } = req.body;
     const userId = req.id;
     const { username } = await UserDocument.findOne({ _id: userId });
+    console.log(username)
+    console.log(rooms)
     var room_number = [];
 
-    for (let i = 0; i < rooms.length; i++) {
+    /* for (let i = 0; i < rooms.length; i++) {
         room_number = await findEmptyRoom(rooms[i].room_name, rooms[i].count);
-        rooms[i] = { ...rooms[i], room_number: room_number, total_cost: eachRoomTotalCost[i] }
+        rooms[i] = { ...rooms[i], roomNumber: roomNumber, total_cost: eachRoomTotalCost[i] }
     }
 
     for(let j=0; j< rooms.length; j++) {
         await RoomDocument.findOneAndUpdate({ room_number: rooms[j].room_number} , {is_booked : true});
     }
 
-    const data = { check_in, check_out, adults_count: Number(adults_count), children: Number(children_count), owner: username, roomsInfo: rooms }
+    const data = { checkIn, checkOut, adultsCount: Number(adultsCount), children: Number(childrenCount), owner: username, roomsInfo: rooms }
     
     try {
         await bookingInfoDocument.create(data);
         res.status(200).json({isCreated: true});
     } catch (error) {
         console.log(error);
-    }
+    } */
 }
 
 export const getReservationHistory = async(req , res) => {
