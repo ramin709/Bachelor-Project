@@ -12,7 +12,7 @@ const BookingSummary = ({ rooms , info }) => {
     console.log(info)
     
     useEffect(() => {
-        setUserData({checkIn: info.checkIn , checkOut: info.checkOut , adults_count: info.adults , children_count: info.children , rooms: info.rooms})
+        setUserData({checkIn: info.checkIn , checkOut: info.checkOut , adultsCount: info.adults , childrenCount: info.children , rooms: info.rooms})
     } , [info])
     
     useEffect(() => {

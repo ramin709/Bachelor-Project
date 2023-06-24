@@ -27,33 +27,40 @@ export const reserveRooms = async (req, res) => {
     const { checkIn, checkOut, adultsCount, childrenCount, rooms, eachRoomTotalCost } = req.body;
     const userId = req.id;
     const { username } = await UserDocument.findOne({ _id: userId });
-    console.log(username)
-    console.log(rooms)
-    var room_number = [];
+    var roomsNumber = [];
 
-    /* for (let i = 0; i < rooms.length; i++) {
-        room_number = await findEmptyRoom(rooms[i].room_name, rooms[i].count);
-        rooms[i] = { ...rooms[i], roomNumber: roomNumber, total_cost: eachRoomTotalCost[i] }
+    for (let i = 0; i < rooms.length; i++) {
+        roomsNumber = await findEmptyRoom(rooms[i].name, rooms[i].count, checkIn);
+        rooms[i] = { ...rooms[i], _id: roomsNumber, totalCost: eachRoomTotalCost[i] }
     }
 
-    for(let j=0; j< rooms.length; j++) {
-        await RoomDocument.findOneAndUpdate({ room_number: rooms[j].room_number} , {is_booked : true});
+    for (let j = 0; j < rooms.length; j++) {
+        await RoomDocument.findOneAndUpdate({ _id: rooms[j]._id }, { isBooked: true });
     }
 
-    const data = { checkIn, checkOut, adultsCount: Number(adultsCount), children: Number(childrenCount), owner: username, roomsInfo: rooms }
-    
+    const newRooms = rooms.map(room => room._id)[0];
+    var totalCost = 0;    
+    for(let i = 0; i < rooms.length; i++) {
+        totalCost += rooms[i].totalCost;
+    }
+
+    totalCost = totalCost + (totalCost*0.09) + 10;
+
+    const data = { checkIn, checkOut, owner: username, rooms: newRooms , totalCost: totalCost }
+    console.log(data)
+
     try {
         await bookingInfoDocument.create(data);
         res.status(200).json({isCreated: true});
     } catch (error) {
         console.log(error);
-    } */
+    }
 }
 
-export const getReservationHistory = async(req , res) => {
+export const getReservationHistory = async (req, res) => {
     const userId = req.id;
-    const {username} = await UserDocument.findOne({_id: userId});
-    const reservationHistory = await bookingInfoDocument.find({owner: username});
+    const { username } = await UserDocument.findOne({ _id: userId });
+    const reservationHistory = await bookingInfoDocument.find({ owner: username });
     res.status(200).json(reservationHistory);
 }
 

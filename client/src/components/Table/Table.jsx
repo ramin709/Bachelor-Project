@@ -147,7 +147,7 @@ const Table = () => {
                                         <select name="" id="" className="tableSelect" onChange={(e) => handleChange(e, room.name)}>
                                             {
 
-                                                room?.vacantCount >= 6 ?
+                                                room?.vacantCount >= 6 || !room?.vacantCount ?
                                                     <>
                                                         <option value="0">0 &nbsp; &nbsp; &nbsp; ({0 * room.costPerDay}$)</option>
                                                         <option value="1">1 &nbsp; &nbsp; &nbsp; ({1 * room.costPerDay}$)</option>
