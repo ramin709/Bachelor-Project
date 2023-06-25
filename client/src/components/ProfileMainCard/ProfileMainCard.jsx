@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { sendProfileChange, sendChangePassData, getReservationHistory, addReview } from '../../api/api'
 import './ProfileMainCard.css'
-import {AiFillCloseCircle} from 'react-icons/ai'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import Rating from '@mui/material/Rating';
 
 const ProfileMainCard = ({ user }) => {
@@ -14,8 +14,8 @@ const ProfileMainCard = ({ user }) => {
 
     const [activeTab, setActiveTab] = useState(EDIT_PROFILE);
     const [enableEdit, setEnableEdit] = useState(false);
-    const [activeReview , setActiveReview] = useState('');
-    const [review , setReview] = useState({rating: 0 , review: ''})
+    const [activeReview, setActiveReview] = useState('');
+    const [review, setReview] = useState({ rating: 0, review: '' })
     const [history, setHistory] = useState([]);
     const ref = useRef();
     const [profileFormData, setProfileFormData] = useState({
@@ -73,7 +73,7 @@ const ProfileMainCard = ({ user }) => {
         setEnableEdit(false)
     }
 
-console.log(history)
+    console.log(history)
 
     const handleChangeInfo = async (e) => {
         e.preventDefault();
@@ -97,9 +97,11 @@ console.log(history)
         }
     }
 
-    const sendReview = async() => {
+    const sendReview = async () => {
         await addReview({ ...review, reservationId: activeReview?._id });
     }
+
+    console.log('activeReview' , activeReview);
 
     return (
         <div className='profileMainCardContainer'>
@@ -172,7 +174,7 @@ console.log(history)
                                         <label htmlFor="male" className="radioLabel">Male
                                             <input className="profileRadioInput" name="gender" type="radio" value="male" id="male"
                                                 disabled={!enableEdit}
-                                                defaultChecked={user?.gender === "male" ? true: null}
+                                                defaultChecked={user?.gender === "male" ? true : null}
                                                 onChange={(e) => setProfileFormData({ ...profileFormData, gender: e.target.value })} />
                                             <span className="checkmark"></span>
                                         </label>
@@ -181,7 +183,7 @@ console.log(history)
                                         <label htmlFor="female" className="radioLabel">Female
                                             <input className="profileRadioInput" name="gender" type="radio" value="female" id="female"
                                                 disabled={!enableEdit}
-                                                defaultChecked={user?.gender === "female" ? true: null}
+                                                defaultChecked={user?.gender === "female" ? true : null}
                                                 onChange={(e) => setProfileFormData({ ...profileFormData, gender: e.target.value })} />
                                             <span className="checkmark"></span>
                                         </label>
@@ -245,24 +247,18 @@ console.log(history)
                                         <tbody className="profileTableBody">
                                             {
                                                 history.map(singleHistory =>
-                                                    singleHistory.roomsInfo.map(roomInfo =>
-                                                        roomInfo.room_number.map(room => {
-                                                            return (
-                                                                <tr className="profileTableRow">
-                                                                    <td className="profileTableBodyCell">
-                                                                        {new Date(singleHistory.check_in).toDateString()} &nbsp;
-                                                                        to
-                                                                        &nbsp;
-                                                                        {new Date(singleHistory.check_out).toDateString()}
-                                                                    </td>
-                                                                    <td className="profileTableBodyCell">{room}</td>
-                                                                    <td className="profileTableBodyCell">{roomInfo.room_name}</td>
-                                                                    <td className="profileTableBodyCell">$ {roomInfo.total_cost / roomInfo.count}</td>
-                                                                    <td className="profileTableBodyCell" > <button className="addReviewBtn" onClick={() => setActiveReview(singleHistory)}>{singleHistory?.review ? 'Preview' : 'Add Review'}</button></td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                    )
+                                                    <tr className="profileTableRow">
+                                                        <td className="profileTableBodyCell">
+                                                            {new Date(singleHistory.checkIn).toDateString()} &nbsp;
+                                                            to
+                                                            &nbsp;
+                                                            {new Date(singleHistory.checkOut).toDateString()}
+                                                        </td>
+                                                        <td className="profileTableBodyCell">{singleHistory.rooms}</td>
+                                                        <td className="profileTableBodyCell">{singleHistory.name}</td>
+                                                        <td className="profileTableBodyCell">$ {singleHistory.totalCost}</td>
+                                                        <td className="profileTableBodyCell" > <button className="addReviewBtn" onClick={() => setActiveReview(singleHistory)}>{singleHistory?.review ? 'Preview' : 'Add Review'}</button></td>
+                                                    </tr>
                                                 )
                                             }
                                         </tbody>
@@ -280,12 +276,12 @@ console.log(history)
                                                 <div className="addReviewContent">
                                                     <div className="addReviewInputContainer">
                                                         <label htmlFor="rating" className="addReviewLabel">Rating</label>
-                                                        <Rating id="rating" className="ratingComp" readOnly={activeReview?.review ? true : false} value={activeReview?.rating ? activeReview.rating : review.rating} onChange={(e) => setReview({ ...review, rating: e.target.value })}></Rating>
+                                                        <Rating id="rating" className="ratingComp" readOnly={activeReview?.review ? true : false} value={activeReview?.review?.rating ? activeReview?.review.rating : review.rating} onChange={(e) => setReview({ ...review, rating: e.target.value })}></Rating>
                                                     </div>
 
                                                     <div className="addReviewTextContainer">
                                                         <label htmlFor="review" className="addReviewLabel">Review</label>
-                                                        <textarea name="review" id="review" className="addReviewTextarea" disabled={activeReview?.review ? true : false} value={activeReview?.review && activeReview.review} onChange={(e) => setReview({ ...review, review: e.target.value })}></textarea>
+                                                        <textarea name="review" id="review" className="addReviewTextarea" disabled={activeReview?.review ? true : false} value={activeReview?.review?.review} onChange={(e) => setReview({ ...review, review: e.target.value })}></textarea>
                                                     </div>
                                                 </div>
 

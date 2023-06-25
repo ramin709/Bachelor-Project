@@ -24,7 +24,7 @@ export const getReservationData = async (req, res) => {
 }
 
 export const reserveRooms = async (req, res) => {
-    const { checkIn, checkOut, adultsCount, childrenCount, rooms, eachRoomTotalCost } = req.body;
+    const { checkIn, checkOut, rooms, eachRoomTotalCost } = req.body;
     const userId = req.id;
     const { username } = await UserDocument.findOne({ _id: userId });
     var roomsNumber = [];
@@ -60,7 +60,8 @@ export const reserveRooms = async (req, res) => {
 export const getReservationHistory = async (req, res) => {
     const userId = req.id;
     const { username } = await UserDocument.findOne({ _id: userId });
-    const reservationHistory = await bookingInfoDocument.find({ owner: username });
+    //const reservationHistory = await bookingInfoDocument.find({ owner: username });
+    
     res.status(200).json(reservationHistory);
 }
 

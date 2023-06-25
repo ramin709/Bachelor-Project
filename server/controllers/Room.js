@@ -19,11 +19,21 @@ const changeVacantCount = (roomsList, roomType) => {
 }
 
 const getFreeRoomTypes = async (rooms) => {
-    const allRoomTypes = await RoomTypeDocument.find();
+    const allRoomTypes = await RoomTypeDocument.aggregate([{
+        $lookup: {
+            from: 'roomservices',
+            localField: '_id',
+            foreignField: 'roomTypes',
+            as: 'services'
+        }
+    }]);
+    /* console.log(rooms)
+    console.log(allRoomTypes.services) */
     var freeRoomTypes = [];
     var count = 0;
     allRoomTypes.forEach(roomType => {
         rooms.forEach(room => {
+            /* console.log(room) */
             if (room.roomType.toString() === roomType._id.toString()) {
                 //console.log('iterate')
                 /* console.log('room' , room);
@@ -35,7 +45,7 @@ const getFreeRoomTypes = async (rooms) => {
                     freeRoomTypes = changeVacantCount(freeRoomTypes, availableRoomType);
                 } else {
                     //console.log('enter else')
-                    freeRoomTypes.push({ ...roomType._doc, vacantCount: 1 })
+                    freeRoomTypes.push({ ...roomType, vacantCount: 1 })
                 }
             }
         })
@@ -44,40 +54,15 @@ const getFreeRoomTypes = async (rooms) => {
     return freeRoomTypes;
 }
 
-/* const removeDuplicates = (allRoomTypeAvailable) => {
-    var allRoomTypesAvailableWithoutDuplicates = [];
-    var response = null;
-
-    allRoomTypeAvailable.forEach(roomType => {
-
-        var isExists = false;
-        if (allRoomTypesAvailableWithoutDuplicates.length > 0) {
-            allRoomTypesAvailableWithoutDuplicates.forEach(item => {
-                if (item.room_name === roomType.room_name) {
-                    isExists = true;
-                }
-            })
-            if (!isExists) {
-                allRoomTypesAvailableWithoutDuplicates.push(roomType);
-            }
-        } else {
-            allRoomTypesAvailableWithoutDuplicates.push(roomType);
-        }
-
-        response = allRoomTypesAvailableWithoutDuplicates;
-    })
-    return response;
-} */
-
 export const getAvailableRoomTypes = async (req, res) => {
     const { rooms, adults, children } = req.body;
     const numberOfGuests = adults + children;
-    const allRooms = await RoomDocument.find({ isChecked: false });
+    const allRooms = await RoomDocument.find();
     if (numberOfGuests >= Number(rooms)) {
         if (allRooms !== null) {
             const freeRooms = await getFreeRoomsInFuture(allRooms, req.body.checkIn);
             const result = await getFreeRoomTypes(freeRooms);
-            //console.log('Free rooms are',result);
+            /* console.log('Free rooms are',result); */
             res.status(200).json(result);
         }
     }
@@ -113,15 +98,15 @@ export const findEmptyRoom = async (roomType, count, checkInDate) => {
         }]);
 
         result.forEach(singleRecord => {
-            const correspondingDate = singleRecord?.bookingInfo[0]?.checkOut
+            const correspondingDate = singleRecord?.bookingInfo[singleRecord?.bookingInfo.length - 1]?.checkOut
             const checkOutDate = correspondingDate ? new Date(correspondingDate) : null;
             const customerCheckInDate = new Date(checkInDate);
             if (checkOutDate) {
                 if (checkOutDate.getMonth() === customerCheckInDate.getMonth()) {
                     const diffTime = Math.abs(customerCheckInDate - checkOutDate);
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    if (diffDays >= 0){
-                        foundedRooms.push({_id : singleRecord?._id})
+                    if (diffDays >= 0) {
+                        foundedRooms.push({ _id: singleRecord?._id })
                     }
                 }
             }
@@ -134,22 +119,38 @@ export const findEmptyRoom = async (roomType, count, checkInDate) => {
 
 export const bookRoom = async (roomNumber) => {
     const updatedRoom = await RoomDocument.findOneAndUpdate({ roomNumber: roomNumber }, { isBooked: true }, { returnDocument: 'after' });
-     console.log(updatedRoom)
 }
 
 const getFreeRoomsInFuture = async (rooms, checkInDate) => {
     var notBookedRooms = rooms.filter(room => room.isBooked === false);
-    var allReservations = await BookingInfoDocument.find({ checkOut: { $lte: new Date(checkInDate) } });
-    allReservations.forEach(reserve => {
-        reserve.rooms.forEach(singleRoom => {
-            rooms.forEach(room => {
-                if (room._id.toString() == singleRoom.toString()) {
-                    notBookedRooms.push(room);
-                }
-            })
-        })
+    const RoomsWithCheckOut = await RoomDocument.aggregate([{
+        $lookup: {
+            from: 'bookinginfos',
+            localField: '_id',
+            foreignField: 'rooms',
+            as: 'bookingInfo'
+        }
+    },{
+        $match: {
+        isBooked: true
+    }}
+    ])
+    RoomsWithCheckOut.forEach(roomWithCheckOut => {
+        console.log(roomWithCheckOut)
+        const latestReserveForCurrentRoom = roomWithCheckOut.bookingInfo[roomWithCheckOut.bookingInfo.length - 1];
+        const customerCheckInDate = new Date(checkInDate).getTime();
+        const latestCheckOutDate = new Date(latestReserveForCurrentRoom?.checkOut).getTime();
+        /* console.log(customerCheckInDate);
+        console.log(latestCheckOutDate); */
+        if (customerCheckInDate >= latestCheckOutDate) {
+            /* console.log('enter');
+            console.log(rooms) */
+            const freeRoom = rooms.filter(room => room._id.toString() === roomWithCheckOut._id.toString());
+            /* console.log(freeRoom) */
+            notBookedRooms.push(freeRoom[0]);
+        }
     })
-
+    //console.log(notBookedRooms)
     return notBookedRooms;
 }
 

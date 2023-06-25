@@ -26,7 +26,7 @@ const RoomPage = () => {
 
   return (
     Room && <div>
-      <RoomHeader name={Room.room_name} cost={Room.cost_per_day} capacity={Room.capacity} />
+      <RoomHeader name={Room.name} cost={Room.costPerDay} capacity={Room.capacity} />
       <RoomSummary services={Room.services} />
       <Suspense fallback={<div>Loading ...</div>}>
         <RoomDetails description={Room.description} />

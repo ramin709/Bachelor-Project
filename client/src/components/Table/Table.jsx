@@ -130,16 +130,16 @@ const Table = () => {
                                     <td className="tableCellsService">
                                         <div className="tableCellContainer">
                                             <div className="servicesContainer">
-                                                {/* {
-                                                    room.services.map((service, index) => <span key={index}>{
+                                                {
+                                                    room.services.map((service) => <span key={service.service}>{
                                                         <div className="services">
-                                                            <Icon item={service} />
-                                                            <span>{service}</span>
+                                                            <Icon item={service.service} />
+                                                            <span>{service.service}</span>
                                                         </div>
 
                                                     }</span>)
 
-                                                } */}
+                                                }
                                             </div>
                                         </div>
                                     </td>
