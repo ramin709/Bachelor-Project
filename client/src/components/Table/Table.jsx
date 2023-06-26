@@ -57,6 +57,7 @@ const Table = () => {
     }, [searchParams])
 
 
+    console.log(recommended)
     const handleForm = (e) => {
         e.preventDefault();
 

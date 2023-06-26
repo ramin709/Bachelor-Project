@@ -6,7 +6,9 @@ API.interceptors.request.use(req => {
         req.headers.Authorization = `Bearer ${localStorage.getItem('refresh')}`;
     }
     return req;
-})
+});
+
+
 
 export const fetchStats = () => API.get('/user/Stats/');
 export const fetchFeaturedRooms = () => API.get('/roomType/FeaturedRooms/');
@@ -25,3 +27,4 @@ export const sendChangePassData = (data) => API.patch('/user/ChangePassword/' , 
 export const sendProfileChange = (data) => API.patch('/user/Profile/' , data);
 export const changeProfileImg = (data) => API.patch('/user/changeProfileImg/' , data);
 export const addReview = (data) => API.post('/user/addReview' , data);
+export const getUserNameAndLastName = () => API.get('/reserve/user');

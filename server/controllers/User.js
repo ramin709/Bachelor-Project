@@ -9,7 +9,14 @@ const userCounts = async () => {
     return numberOfUsers;
 }
 
-/* const getMostPositiveRatings = async () => {
+export const getUserNameAndLastName = async (req, res) => {
+    console.log('getUserInfoInReservation');
+    const id = req.id;
+    const userInfo = await UserDocument.findOne({ _id: id }).select(['firstName', 'lastName']);
+    res.status(200).json(userInfo);
+}
+
+const getMostPositiveRatings = async () => {
     const allReviews = await ReviewsDocument.find();
     const mostPositiveRatings = allReviews.filter(review => review.rating >= 4);
     const mostPositiveRatingsCounts = mostPositiveRatings.length;
@@ -17,12 +24,14 @@ const userCounts = async () => {
 }
 
 export const getUser = async (req, res) => {
+    console.log('getUser')
     const userId = req.id;
     const relatedUser = await UserDocument.findOne({ _id: userId });
     res.status(200).json({ user: relatedUser })
 }
 
 export const changePassword = async (req, res) => {
+    console.log('changePass');
     const { old_password, new_password, confirm_new_password } = req.body;
     const userId = req.id;
 
@@ -42,13 +51,15 @@ export const changePassword = async (req, res) => {
 }
 
 export const editUserInfo = async (req, res) => {
+    console.log('editUser');
     const userId = req.id;
-    const { username, firstName, lastName, email, phone, gender, birth_date } = req.body;
-    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, firstName, lastName, email,phone_number: phone, gender, birthday: birth_date });
+    const { username, firstName, lastName, email, phoneNumber, gender, birthOfDate } = req.body;
+    const userWithNewInfo = await UserDocument.findByIdAndUpdate(userId, { username, firstName, lastName, email, phoneNumber, gender, birthOfDate });
     res.status(200).json({ user: userWithNewInfo });
-} */
+}
 
 export const signUp = async (req, res) => {
+    console.log('signUp');
     const { firstName, lastName, check, password, confirm_password, username } = req.body;
     try {
         const existingUser = await UserDocument.findOne({ username });
@@ -72,6 +83,7 @@ export const signUp = async (req, res) => {
 }
 
 export const signIn = async (req, res) => {
+    console.log('signIn');
     const { username, password } = req.body;
     try {
         const relatedUser = await UserDocument.findOne({ username });
@@ -98,27 +110,30 @@ export const signIn = async (req, res) => {
 }
 
 export const getFeaturedReviews = async (req, res) => {
-    /* const allReviews = await ReviewsDocument.find({ rating: { $gte: 4 } });
+    console.log('getFeaturedReviews');
+    var result = [];
+    const reviews = await BookingsDocument.aggregate([{
+        $lookup: {
+            from: 'users',
+            localField: 'owner',
+            foreignField: 'username',
+            as: 'userInfo'
+        }
+    }
+    ]);
 
-    const allUsers = await UserDocument.find();
-    var reviewsWithUserInfo = [];
+    reviews.forEach(review => {
+        if(review.review && review.review.rating >=4){
+            result.push({firstName: review.userInfo[0].firstName , profileImg: review.userInfo[0].profileImg , lastName: review.userInfo[0].lastName , review: review.review.review , rating: review.review.rating});
+        }
+    })
 
-    allUsers.forEach(user => {
-        allReviews.forEach(singleReview => {
-            if (user._id.toString() == singleReview.user_id.toString()) {
-                reviewsWithUserInfo.push({ firstName: user.firstName, lastName: user.lastName, profile_img: user.profile_img, review: singleReview.review, rating: singleReview.rating });
-            }
-        })
-    }); */
+    res.status(200).json(result.slice(0,9));
 
-    /* const allReviews = await BookingsDocument.find({ rating: { $gte: 4}});
-    console.log(allReviews);
-
-    res.status(200).json(reviewsWithUserInfo.slice(0, 8));
- */
 }
 
 export const getStatsInfo = async (req, res) => {
+    console.log('getStats');
     const roomsCount = await getRoomCounts(req, res);
     const staffCount = 1000;
     const usersCount = await userCounts();
@@ -127,20 +142,22 @@ export const getStatsInfo = async (req, res) => {
     res.status(200).json({ rooms_count: roomsCount, staff_count: staffCount, guests_count: usersCount, positive_ratings_count: positiveRatingReviewsCount })
 }
 
-/* export const changeProfileImg = async (req, res) => {
+export const changeProfileImg = async (req, res) => {
+    console.log('changeProfImg');
     const userId = req.id;
-    const relatedUser = await UserDocument.findByIdAndUpdate(userId , {profile_img: `./images/${req.file.originalname}`});
+    const relatedUser = await UserDocument.findByIdAndUpdate(userId, { profileImg: `./images/${req.file.originalname}` });
 
-    res.status(200).json({relatedUser})
+    res.status(200).json({ relatedUser })
 }
 
 export const addReviewToUser = async (req, res) => {
+    console.log('addReview');
     console.log(req.body.reservationId)
     const relatedReservation = await BookingsDocument.findById(req.body.reservationId);
     console.log(relatedReservation);
-    const user = await UserDocument.findOne({username: relatedReservation?.owner});
+    const user = await UserDocument.findOne({ username: relatedReservation?.owner });
     console.log(user);
-    user.reviews.push({reservationId: req.body.reservationId , rating: req.body.rating , review: req.body.review});
-    const result = await UserDocument.findOneAndUpdate(user._id , {reviews: user.reviews})
-    res.status(200).json(result); 
-} */
+    user.reviews.push({ reservationId: req.body.reservationId, rating: req.body.rating, review: req.body.review });
+    const result = await UserDocument.findOneAndUpdate(user._id, { reviews: user.reviews })
+    res.status(200).json(result);
+}

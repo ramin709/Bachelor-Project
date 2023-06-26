@@ -28,7 +28,7 @@ self.addEventListener('activate' , () => {
 
 })
 
-self.addEventListener('fetch' , (event) => {
+/* self.addEventListener('fetch' , (event) => {
     event.waitUntil(
         caches.match(event.request).then(res => {
             return res || fetch(event.request).then(fetchedRes => {
@@ -39,4 +39,4 @@ self.addEventListener('fetch' , (event) => {
             }).catch(err => console.log('unable to fetch from resource'));
         })
     )
-})
+}) */

@@ -70,7 +70,14 @@ export const getAvailableRoomTypes = async (req, res) => {
 }
 
 export const getAllAvailableRoomTypes = async (req, res) => {
-    const allRoomTypes = await RoomTypeDocument.find();
+    const allRoomTypes = await RoomTypeDocument.aggregate([{
+        $lookup:{
+            from: 'roomservices',
+            localField: '_id',
+            foreignField: 'roomTypes',
+            as: 'services'
+        }
+    }]);
     res.status(200).json(allRoomTypes);
 }
 
@@ -95,7 +102,7 @@ export const findEmptyRoom = async (roomType, count, checkInDate) => {
                 foreignField: 'rooms',
                 as: 'bookingInfo'
             }
-        }]);
+        }]).limit(remaining);
 
         result.forEach(singleRecord => {
             const correspondingDate = singleRecord?.bookingInfo[singleRecord?.bookingInfo.length - 1]?.checkOut
@@ -136,7 +143,6 @@ const getFreeRoomsInFuture = async (rooms, checkInDate) => {
     }}
     ])
     RoomsWithCheckOut.forEach(roomWithCheckOut => {
-        console.log(roomWithCheckOut)
         const latestReserveForCurrentRoom = roomWithCheckOut.bookingInfo[roomWithCheckOut.bookingInfo.length - 1];
         const customerCheckInDate = new Date(checkInDate).getTime();
         const latestCheckOutDate = new Date(latestReserveForCurrentRoom?.checkOut).getTime();

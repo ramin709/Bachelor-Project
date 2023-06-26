@@ -19,13 +19,13 @@ const ProfileMainCard = ({ user }) => {
     const [history, setHistory] = useState([]);
     const ref = useRef();
     const [profileFormData, setProfileFormData] = useState({
-        first_name: user?.first_name,
-        last_name: user?.last_name,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
         email: user?.email,
-        phone_number: user?.phone_number,
+        phoneNumber: user?.phoneNumber,
         username: user?.username,
         gender: user?.gender,
-        birthday: user?.birthday,
+        birthOfDate: user?.birthOfDate,
     })
 
     const [passwordFormData, setPasswordFormData] = useState({
@@ -131,18 +131,18 @@ const ProfileMainCard = ({ user }) => {
                                     <div className="profileInputItem">
                                         <label htmlFor="firstName">First Name</label>
                                         <input type="text" ref={ref}
-                                            name="first_name"
+                                            name="firstName"
                                             id="firstName"
                                             disabled={!enableEdit}
-                                            onChange={(e) => setProfileFormData({ ...profileFormData, first_name: e.target.value })}
-                                            defaultValue={user?.first_name}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, firstName: e.target.value })}
+                                            defaultValue={user?.firstName}
                                         />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="lastName">Last Name</label>
-                                        <input type="text" name="last_name" id="lastName" disabled={!enableEdit}
-                                            onChange={(e) => setProfileFormData({ ...profileFormData, last_name: e.target.value })}
-                                            defaultValue={user?.last_name}
+                                        <input type="text" name="lastName" id="lastName" disabled={!enableEdit}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, lastName: e.target.value })}
+                                            defaultValue={user?.lastName}
                                         />
                                     </div>
                                     <div className="profileInputItem">
@@ -154,8 +154,8 @@ const ProfileMainCard = ({ user }) => {
                                     <div className="profileInputItem">
                                         <label htmlFor="Phone">Phone</label>
                                         <input type="text" name="phone" id="Phone" disabled={!enableEdit}
-                                            defaultValue={user?.phone_number}
-                                            onChange={(e) => setProfileFormData({ ...profileFormData, phone: e.target.value })} />
+                                            defaultValue={user?.phoneNumber}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, phoneNumber: e.target.value })} />
                                     </div>
                                     <div className="profileInputItem">
                                         <label htmlFor="userName">Username</label>
@@ -166,8 +166,8 @@ const ProfileMainCard = ({ user }) => {
                                     <div className="profileInputItem">
                                         <label htmlFor="userName">Birth Date</label>
                                         <input type="date" name="username" id="userName" disabled={!enableEdit}
-                                            defaultValue={user?.birthday}
-                                            onChange={(e) => setProfileFormData({ ...profileFormData, birth_date: e.target.value })} />
+                                            defaultValue={user?.birthOfDate}
+                                            onChange={(e) => setProfileFormData({ ...profileFormData, birthOfDate: e.target.value })} />
                                     </div>
                                     <div className="radioProfileContainer">
 
@@ -238,8 +238,7 @@ const ProfileMainCard = ({ user }) => {
                                         <thead className="profileTableHeader">
                                             <tr>
                                                 <th className="profileTableHeaderCell">Date</th>
-                                                <th className="profileTableHeaderCell">No.Room</th>
-                                                <th className="profileTableHeaderCell">Room Type</th>
+                                                <th className="profileTableHeaderCell">Rooms</th>
                                                 <th className="profileTableHeaderCell">Cost</th>
                                                 <th className="profileTableHeaderCell">Review</th>
                                             </tr>
@@ -255,7 +254,6 @@ const ProfileMainCard = ({ user }) => {
                                                             {new Date(singleHistory.checkOut).toDateString()}
                                                         </td>
                                                         <td className="profileTableBodyCell">{singleHistory.rooms}</td>
-                                                        <td className="profileTableBodyCell">{singleHistory.name}</td>
                                                         <td className="profileTableBodyCell">$ {singleHistory.totalCost}</td>
                                                         <td className="profileTableBodyCell" > <button className="addReviewBtn" onClick={() => setActiveReview(singleHistory)}>{singleHistory?.review ? 'Preview' : 'Add Review'}</button></td>
                                                     </tr>

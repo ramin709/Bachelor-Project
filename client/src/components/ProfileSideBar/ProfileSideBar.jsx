@@ -18,19 +18,19 @@ const ProfileSideBar = ({user}) => {
             <div className="profileSideBarCard">
                 <div className="innerProfileCard">
                     <div className="profileImgContainer">
-                        <img src={user?.profile_img} alt="profileImg" />
+                        <img src={user?.profileImg} alt="profileImg" />
                     </div>
 
                     <div className="profileInfo">
                         <h6 className="profileUserName">{user?.username}</h6>
                         <div className="profileName">
-                            <span className="Name">{user?.first_name}</span>
-                            <span className="Name">{user?.last_name}</span>
+                            <span className="Name">{user?.firstName}</span>
+                            <span className="Name">{user?.lastName}</span>
                         </div>
 
                         <div className="furtherInfo">
                             <span className="email">{user?.email}</span>
-                            <span className="Phone">{user?.phone_number}</span>
+                            <span className="Phone">{user?.phoneNumber}</span>
                         </div>
                     </div>
                 </div>

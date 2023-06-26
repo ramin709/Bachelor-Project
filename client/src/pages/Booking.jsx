@@ -69,7 +69,7 @@ const Booking = () => {
     <div>
       <Navbar covered />
       <BookingDetail rooms={info?.rooms} checkIn={info?.checkIn} checkOut={info?.checkOut} />
-      {/* <RoomsCard rooms={roomData} guests={Number(info?.adults) + Number(info?.children)}/> */}
+      <RoomsCard rooms={roomData} guests={Number(info?.adults) + Number(info?.children)}/>
       <BookingSummary rooms={roomData} info={info} />
       <Footer />
     </div>

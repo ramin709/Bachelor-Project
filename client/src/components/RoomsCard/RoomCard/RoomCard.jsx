@@ -1,14 +1,29 @@
-import React from 'react'
+import {useEffect , useState} from 'react'
 import Icon  from '../../Table/Icon/Icon'
 import { MdOutlineRoomService } from 'react-icons/md'
 import { GiConfirmed } from 'react-icons/gi'
 import './RoomCard.css'
+import { getUserNameAndLastName } from '../../../api/api'
 
 const RoomCard = ({ room, guest }) => {
+
+    const [userInfo, setUserInfo] = useState({})
+    useEffect(() => {
+        const getUserInfo = async() => {
+            const {data} = await getUserNameAndLastName();
+            console.log(data);
+            setUserInfo(data);
+        }
+
+        getUserInfo();
+    }, [])
+
+    console.log(room)
+
     return (
         <div className="RoomCardContainer">
             <div className="innerRoomCard">
-                <h4 className="RoomCardTitle">{room.room_name}</h4>
+                <h4 className="RoomCardTitle">{room.name}</h4>
             </div>
 
             <div className="roomCardInfo">
@@ -20,11 +35,11 @@ const RoomCard = ({ room, guest }) => {
 
             <div className="roomServices">
                 {
-                    room.services.map((service, index) => <span key={Object.values(service)[0]}>{
+                    room.services.map((service) => <span key={Object.values(service)[0]}>{
 
                         <div className="roomServiceItem">
-                            <Icon item={service} />
-                            <span>{service}</span>
+                            <Icon item={service.service} />
+                            <span>{service.service}</span>
                         </div>
 
                     }</span>)
@@ -39,7 +54,7 @@ const RoomCard = ({ room, guest }) => {
 
             <div className="guestsNumber">
                 <h4 className="guestTitle">Full guest name: </h4>
-                <span>John Doe</span>
+                <span>{userInfo?.firstName}  {userInfo?.lastName}</span>
             </div>
         </div>
     )
